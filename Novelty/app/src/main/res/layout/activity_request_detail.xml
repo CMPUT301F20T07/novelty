@@ -1,0 +1,151 @@
+<?xml version=".0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="User Info"
+                android:textColor="#000000"
+                android:textSize="18sp" />
+
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/add_shape"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:text="" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:background="@mipmap/ic_launcher" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="author" />
+
+                <TextView
+                    android:id="@+id/tv_au"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="10dp"
+
+                    android:background="@drawable/add_shape"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Holder" />
+
+                <TextView
+                    android:id="@+id/holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="10dp"
+
+                    android:background="@drawable/add_shape"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ISBN" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/add_shape"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="" />
+
+                <TextView
+                    android:id="@+id/rule"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/add_shape"
+                    android:drawableRight="@android:drawable/arrow_down_float"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:paddingRight="0dp"
+                    android:text="borrowed" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/add_shape"
+            android:gravity="left"
+            android:padding="5dp"
+            android:text="" />
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
