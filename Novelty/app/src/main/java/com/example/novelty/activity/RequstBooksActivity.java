@@ -50,7 +50,7 @@ public class RequstBooksActivity extends AppCompatActivity {
         });
     }
 
-    private void dialogShow(ArrayList<RequestBean> bookBean) {
+    private void dialogShow(List<RequestBean> bookBean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.request_book_dialog, null);

@@ -41,7 +41,8 @@ public class MyRequestActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MyRequestActivity.this, "click", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MyRequestActivity.this, RequestDetailsActivity.class);
+                startActivity(intent);
             }
         });
     }

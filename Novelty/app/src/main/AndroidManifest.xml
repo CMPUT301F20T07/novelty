@@ -17,25 +17,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".activity.Register">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.RequstBooksActivity" />
-        <activity android:name=".activity.SearchBookActivity" />
-        <activity android:name=".activity.SearchUserActivity" />
-        <activity android:name=".activity.MyRequestActivity" />
+        <activity android:name=".activity.SearchBookActivity" >
+
+        </activity>
+        <activity android:name=".activity.SearchUserActivity" >
+
+        </activity>
+        <activity android:name=".activity.RequestDetailsActivity" />
+        <activity android:name=".activity.MyRequestActivity">
+
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

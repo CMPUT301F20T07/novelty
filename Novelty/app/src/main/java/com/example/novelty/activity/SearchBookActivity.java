@@ -1,6 +1,7 @@
 package com.example.novelty.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +31,10 @@ public class SearchBookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search_book);
         searchView = findViewById(R.id.searchView);
+        searchView.onActionViewExpanded();
+        searchView.setIconifiedByDefault(false);
         mListView = findViewById(R.id.listBook);
         mBookList.add(new BookBean("cinder","hexingjie","this is "));
         mBookList.add(new BookBean("cinder1","hexingjie1","this is2 "));

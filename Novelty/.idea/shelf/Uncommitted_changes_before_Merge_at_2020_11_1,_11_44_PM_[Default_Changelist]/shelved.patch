@@ -1,0 +1,53 @@
+Index: app/src/main/java/com/example/novelty/MainActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.novelty;\n\nimport androidx.appcompat.app.AppCompatActivity;\n\nimport android.content.Intent;\nimport android.os.Bundle;\nimport android.view.View;\nimport android.widget.Button;\n\nimport com.google.firebase.auth.FirebaseAuth;\n\npublic class MainActivity extends AppCompatActivity {\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_main);\n        }\n\n    //send user to Login activity once logged out.\n    public void logout (View view){\n        FirebaseAuth.getInstance().signOut();\n        startActivity(new Intent (getApplicationContext(), Login.class));\n        finish(); //\n    }\n}
+===================================================================
+--- app/src/main/java/com/example/novelty/MainActivity.java	(revision 9765523fff43e6208dc5be5ad495fe311bdce23e)
++++ app/src/main/java/com/example/novelty/activity/MainActivity.java	(date 1604240400000)
+@@ -1,12 +1,12 @@
+-package com.example.novelty;
++package com.example.novelty.activity;
+ 
+ import androidx.appcompat.app.AppCompatActivity;
+ 
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.view.View;
+-import android.widget.Button;
+ 
++import com.example.novelty.R;
+ import com.google.firebase.auth.FirebaseAuth;
+ 
+ public class MainActivity extends AppCompatActivity {
+Index: app/src/main/java/com/example/novelty/Login.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.novelty;\n\nimport androidx.annotation.NonNull;\nimport androidx.appcompat.app.AlertDialog;\nimport androidx.appcompat.app.AppCompatActivity;\n\nimport android.content.DialogInterface;\nimport android.content.Intent;\nimport android.os.Bundle;\nimport android.text.TextUtils;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.EditText;\nimport android.widget.ProgressBar;\nimport android.widget.TextView;\nimport android.widget.Toast;\n\nimport com.google.android.gms.tasks.OnCompleteListener;\nimport com.google.android.gms.tasks.OnFailureListener;\nimport com.google.android.gms.tasks.OnSuccessListener;\nimport com.google.android.gms.tasks.Task;\nimport com.google.firebase.auth.AuthResult;\nimport com.google.firebase.auth.FirebaseAuth;\n\npublic class Login extends AppCompatActivity {\n    EditText myEmail,\n            myPassword;\n    Button myLoginBtn;\n    TextView myRegLink,\n            forgotPassLink; //reset password link\n    FirebaseAuth fAuth; //provided by firebase used to register the user.\n    ProgressBar progressBar;\n\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_login);\n\n        // set views and buttons\n        myEmail = findViewById(R.id.email_view);\n        myPassword = findViewById((R.id.password_view));\n        myLoginBtn = findViewById(R.id.login_button);\n\n\n        fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations\n        progressBar = findViewById(R.id.progressBar);\n        myRegLink = findViewById(R.id.register_link);\n        forgotPassLink  = findViewById(R.id.forgot_password_link);\n\n        //click the register button\n        //validate the users input\n        myLoginBtn.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                //get the values of email and password fields\n                String email = myEmail.getText().toString().trim(); // trim() eliminates leading and trailing spaces.\n                String password = myPassword.getText().toString().trim();\n\n                //validate the email and password\n                //check if there was something entered for email\n                if (TextUtils.isEmpty(email)){\n                    //display error message\n                    myEmail.setError(\"Email is required\");\n                    return ;\n                }\n\n                //check if there was something entered for password\n                if (TextUtils.isEmpty(password)){\n                    //display error message\n                    myPassword.setError(\"Password is required\");\n                    return;\n                }\n\n                progressBar.setVisibility(View.VISIBLE); // show user that they are being logged in\n\n                 //authenticate user\n                fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {\n                    @Override\n                    public void onComplete(@NonNull Task<AuthResult> task) {\n                        //check is login is successful or not\n                        if (task.isSuccessful()){\n                            //small popup to show success\n                            Toast.makeText(Login.this, \"Logged in\", Toast.LENGTH_SHORT).show();\n\n                            //send user to main activity\n                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);\n                            startActivity(intent);\n\n                        }else{\n                            //if not complete\n                            Toast.makeText(Login.this, \"Error\" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();\n                            progressBar.setVisibility(View.INVISIBLE); // on error, hide the spinner\n                        }\n                    }\n                });\n            }\n        });\n\n        //if users don't have an account, take them to Register activity\n        myRegLink.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                //send user to Register activity\n                Intent intent = new Intent(getApplicationContext(), Register.class);\n                startActivity(intent);\n            }\n        });\n\n        //if users forget their password, take them to reset password activity\n        forgotPassLink.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                final EditText resetMail = new EditText(v.getContext());\n                AlertDialog.Builder passwordResetDialog  = new AlertDialog.Builder(v.getContext());\n                passwordResetDialog.setTitle(\"Reset Password\");\n                passwordResetDialog.setMessage(\"Enter email to receive a reset password link\");\n                passwordResetDialog.setView(resetMail);\n\n                // click positive send button to send user a reset password link\n                passwordResetDialog.setPositiveButton(\"send\", new DialogInterface.OnClickListener() {\n                    @Override\n                    public void onClick(DialogInterface dialog, int which) {\n                        //extract email and send Link to reset password\n                        String myEmail = resetMail.getText().toString();\n                        fAuth.sendPasswordResetEmail(myEmail).addOnSuccessListener(new OnSuccessListener<Void>() {\n                            @Override\n                            public void onSuccess(Void aVoid) {\n                                Toast.makeText(Login.this, \"reset link sent\", Toast.LENGTH_SHORT).show();\n                            }\n                        }).addOnFailureListener(new OnFailureListener() {\n                            @Override\n                            public void onFailure(@NonNull Exception e) {\n                                Toast.makeText(Login.this, \"Error\" + e.getMessage(), Toast.LENGTH_SHORT).show();\n                            }\n                        });\n                    }\n                });\n\n                // cancel button to direct back to login view.\n                passwordResetDialog.setNegativeButton(\"cancel\", new DialogInterface.OnClickListener() {\n                    @Override\n                    public void onClick(DialogInterface dialog, int which) {\n                        //return to login activity.\n                        Intent intent = new Intent(getApplicationContext(), Login.class);\n                        startActivity(intent);\n                    }\n                });\n\n                //show the user the dialog\n                passwordResetDialog.create().show();\n\n\n\n            }\n        });\n    }\n}
+===================================================================
+--- app/src/main/java/com/example/novelty/Login.java	(revision 9765523fff43e6208dc5be5ad495fe311bdce23e)
++++ app/src/main/java/com/example/novelty/activity/Login.java	(date 1604245302000)
+@@ -15,6 +15,7 @@
+ import android.widget.TextView;
+ import android.widget.Toast;
+ 
++import com.example.novelty.R;
+ import com.google.android.gms.tasks.OnCompleteListener;
+ import com.google.android.gms.tasks.OnFailureListener;
+ import com.google.android.gms.tasks.OnSuccessListener;
+@@ -31,7 +32,6 @@
+     FirebaseAuth fAuth; //provided by firebase used to register the user.
+     ProgressBar progressBar;
+ 
+-
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -42,7 +42,6 @@
+         myPassword = findViewById((R.id.password_view));
+         myLoginBtn = findViewById(R.id.login_button);
+ 
+-
+         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
+         progressBar = findViewById(R.id.progressBar);
+         myRegLink = findViewById(R.id.register_link);

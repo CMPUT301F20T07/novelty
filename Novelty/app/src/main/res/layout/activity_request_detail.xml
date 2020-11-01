@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="User Info"
+                android:text="request detail"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -45,7 +45,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
-                android:text="" />
+                android:text="the gambler" />
 
 
         </LinearLayout>
@@ -80,11 +80,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginRight="10dp"
-
                     android:background="@drawable/add_shape"
                     android:gravity="center_vertical"
                     android:paddingLeft="5dp"
-                    android:text="" />
+                    android:text="request"
+                    android:textColor="#000000" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -100,7 +100,7 @@
                     android:background="@drawable/add_shape"
                     android:gravity="center_vertical"
                     android:paddingLeft="5dp"
-                    android:text="" />
+                    android:text="3333" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,20 +114,20 @@
                     android:background="@drawable/add_shape"
                     android:gravity="center_vertical"
                     android:paddingLeft="5dp"
-                    android:text="" />
+                    android:text="1111" />
 
                 <TextView
                     android:id="@+id/rule"
-                    android:layout_width="0dp"
+                    android:layout_width="100dp"
                     android:layout_height="35dp"
+                    android:layout_gravity="right"
                     android:layout_marginTop="10dp"
-                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
                     android:background="@drawable/add_shape"
-                    android:drawableRight="@android:drawable/arrow_down_float"
                     android:drawablePadding="10dp"
                     android:gravity="center"
                     android:paddingRight="0dp"
-                    android:text="borrowed" />
+                    android:text="request" />
 
 
             </LinearLayout>
@@ -136,15 +136,14 @@
         </LinearLayout>
 
 
-
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="10dp"
             android:background="@drawable/add_shape"
             android:gravity="left"
             android:padding="5dp"
-            android:text="" />
+            android:text="axubduagufagyjdd" />
 
 
     </LinearLayout>
