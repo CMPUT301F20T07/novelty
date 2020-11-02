@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.novelty">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,26 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login">
+        <activity android:name=".activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".Register">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category" />
-            </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".activity.Register">
+        </activity>
+        <activity android:name=".activity.MainActivity">
+        </activity>
+        <activity android:name=".activity.RequstBooksActivity" />
+        <activity android:name=".activity.SearchBookActivity" >
 
-                <category android:name="android.intent.category" />
-            </intent-filter>
+        </activity>
+        <activity android:name=".activity.SearchUserActivity" >
+
+        </activity>
+        <activity android:name=".activity.RequestDetailsActivity" />
+        <activity android:name=".activity.MyRequestActivity">
+
         </activity>
 
         <meta-data
