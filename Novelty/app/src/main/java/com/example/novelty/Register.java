@@ -39,6 +39,7 @@ public class Register extends AppCompatActivity {
     FirebaseAuth fAuth; //provided by firebase used to register the user.
     FirebaseFirestore fStore;
     ProgressBar progressBar;
+    String useless;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
