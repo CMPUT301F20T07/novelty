@@ -22,13 +22,22 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Register extends AppCompatActivity {
+
+    public static final String TAG = "TAG";
 
     EditText myUsername, myEmail, myPassword, myPhone;
     Button myRegisterBtn;
     TextView myLoginLink; // used to direct user to login activity
+    String userID; //unique userID for current user
     FirebaseAuth fAuth; //provided by firebase used to register the user.
+    FirebaseFirestore fStore;
     ProgressBar progressBar;
 
     @Override
@@ -46,6 +55,7 @@ public class Register extends AppCompatActivity {
         myLoginLink = findViewById(R.id.login_link);
 
         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
+        fStore = FirebaseFirestore.getInstance();// get instance of fireStore
         progressBar = findViewById(R.id.progressBar);
 
         //returning user that is already logged in
@@ -59,9 +69,11 @@ public class Register extends AppCompatActivity {
         myRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get the values of email and password fields
+                //get the values of all fields including email/password for authenticating later
                 String email = myEmail.getText().toString().trim(); // trim() eliminates leading and trailing spaces.
                 String password = myPassword.getText().toString().trim();
+                String username = myUsername.getText().toString().trim();
+                String phone = myPhone.getText().toString();
 
                 //validate the email and password
                 //check if there was something entered for email
@@ -94,6 +106,27 @@ public class Register extends AppCompatActivity {
                         if (task.isSuccessful()){
                             //small popup to show success
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
+
+                            // create/update users collections with documents of each user profile
+                            userID = fAuth.getCurrentUser().getUid();
+                            DocumentReference documentReference = fStore.collection("users").document(userID);
+
+                            //add user data using HashMap
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("username", myUsername);
+                            user.put("email", myEmail);
+                            user.put("phone", myPhone);
+
+                            //insert into cloud database
+                            documentReference
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "OnSuccess: user profile is created for "+ userID);
+                                }
+                            });
+
 
                             //send user to main activity
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
