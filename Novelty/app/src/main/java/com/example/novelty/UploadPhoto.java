@@ -1,11 +1,11 @@
 package com.example.novelty;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,11 +34,11 @@ public class UploadPhoto extends AppCompatActivity {
     private Button confirmButton;
     private ImageView imageView;
 
-    Photograph photo = new Photograph();
+    private Uri imageUri;
 
     public static final int TAKE_CAMERA = 101;
     public static final int PICK_PHOTO = 102;
-    private Uri imageUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +93,18 @@ public class UploadPhoto extends AppCompatActivity {
             }
         });
 
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageUri != null) {
+                    Intent data = new Intent();
+                    data.putExtra("returnPhoto", imageUri.toString());
+                    setResult(2, data);
+                    finish();
+                }
+            }
+        });
+
     }
 
 
@@ -128,7 +140,6 @@ public class UploadPhoto extends AppCompatActivity {
                     try {
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         imageView.setImageBitmap(bitmap);
-                        photo.setPhoto(imageUri);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -137,11 +148,10 @@ public class UploadPhoto extends AppCompatActivity {
 
             case PICK_PHOTO:
                 if (resultCode == RESULT_OK) {
-                    Uri uri = data.getData();
+                    imageUri = data.getData();
                     try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         imageView.setImageBitmap(bitmap);
-                        photo.setPhoto(uri);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -151,21 +161,7 @@ public class UploadPhoto extends AppCompatActivity {
             default:
                 break;
         }
-
-        confirmButton = findViewById(R.id.btn_confirm);
-        confirmButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (photo.getPhoto() != null) {
-                    Intent data = new Intent();
-                    data.putExtra("returnPhoto", photo);
-                    setResult(Activity.RESULT_OK, data);
-                    finish();
-                }
-            }
-        });
     }
-
 
 }
 

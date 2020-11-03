@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ViewEditBook extends AppCompatActivity {
 
@@ -41,6 +42,13 @@ public class ViewEditBook extends AppCompatActivity {
                 startActivityForResult(uploadIntent, UPLOAD_PHOTO);
             }
         });
+
+        deletePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                photoView.setImageResource(0);
+            }
+        });
     }
 
 
@@ -48,17 +56,22 @@ public class ViewEditBook extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == UPLOAD_PHOTO) {
-            Photograph returnPhoto = (Photograph) data.getSerializableExtra("returnPhoto");
-            Uri photoUri = returnPhoto.getPhoto();
-            if (photoUri != null) {
-                try{
-                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(photoUri));
-                    photoView.setImageBitmap(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+        switch (requestCode) {
+
+            case UPLOAD_PHOTO:
+                if (resultCode == 2) {
+                    Uri imageUri = Uri.parse(data.getStringExtra("returnPhoto"));
+                    try {
+                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        photoView.setImageBitmap(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
+                break;
+
+            default:
+                break;
         }
     }
 
