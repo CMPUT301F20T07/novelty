@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "818169611358",
-    "firebase_url": "https://novelty-2fa40.firebaseio.com",
-    "project_id": "novelty-2fa40",
-    "storage_bucket": "novelty-2fa40.appspot.com"
+    "project_number": "865074601202",
+    "firebase_url": "https://novelty-20800.firebaseio.com",
+    "project_id": "novelty-20800",
+    "storage_bucket": "novelty-20800.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:818169611358:android:8856ac01b7f89d0869a0cf",
+        "mobilesdk_app_id": "1:865074601202:android:70489217c0a8481d46846b",
         "android_client_info": {
           "package_name": "com.example.novelty"
         }
       },
       "oauth_client": [
         {
-          "client_id": "818169611358-cd8h7ciccmsm5nbvmm4tgevnol1o8gtk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.novelty",
-            "certificate_hash": "8f7714390c374241c316ca1f3792bb787c7f546b"
-          }
-        },
-        {
-          "client_id": "818169611358-oi255cfseqoe3rk1io73jvc0h459hhnj.apps.googleusercontent.com",
+          "client_id": "865074601202-2mn5neju5hin6n0v4p2v12elbhci0qq2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUQtvidy0zUG0f5g-2SXtQTpKuPEVrmew"
+          "current_key": "AIzaSyD38xM7VE93sn3FrZGR5QSTX2g_Mpw2XRk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "818169611358-oi255cfseqoe3rk1io73jvc0h459hhnj.apps.googleusercontent.com",
+              "client_id": "865074601202-2mn5neju5hin6n0v4p2v12elbhci0qq2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
