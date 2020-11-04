@@ -17,7 +17,6 @@
       
         <activity android:name=".ViewEditBook"></activity>
         <activity android:name=".UploadPhoto" />
-        <activity android:name=".Login">
         <activity android:name=".activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
