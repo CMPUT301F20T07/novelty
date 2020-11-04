@@ -1,4 +1,4 @@
-package com.example.novelty;
+package com.example.novelty.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.novelty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,6 @@ public class Login extends AppCompatActivity {
     FirebaseAuth fAuth; //provided by firebase used to register the user.
     ProgressBar progressBar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +41,6 @@ public class Login extends AppCompatActivity {
         myEmail = findViewById(R.id.email_view);
         myPassword = findViewById((R.id.password_view));
         myLoginBtn = findViewById(R.id.login_button);
-
 
         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
         progressBar = findViewById(R.id.progressBar);
