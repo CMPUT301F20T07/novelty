@@ -32,6 +32,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth fAuth; //provided by firebase used to register the user.
     ProgressBar progressBar;
 
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class Login extends AppCompatActivity {
         myEmail = findViewById(R.id.email_view);
         myPassword = findViewById((R.id.password_view));
         myLoginBtn = findViewById(R.id.login_button);
+
 
         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
         progressBar = findViewById(R.id.progressBar);
