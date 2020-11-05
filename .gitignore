@@ -1,0 +1,16 @@
+*.iml
+/Novelty/.gradle
+/Novelty/.idea
+/Novelty/local.properties
+/Novelty/.idea/caches
+/Novelty/.idea/libraries
+/Novelty/.idea/modules.xml
+/Novelty/.idea/workspace.xml
+/Novelty/.idea/navEditor.xml
+/Novelty/.idea/assetWizardSettings.xml
+.DS_Store
+/Novelty/build
+/Novelty/captures
+/Novelty/.externalNativeBuild
+/Novelty/.cxx
+/Novelty/.DS_Store
