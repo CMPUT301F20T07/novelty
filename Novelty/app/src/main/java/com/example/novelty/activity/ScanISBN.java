@@ -1,4 +1,4 @@
-package com.example.novelty;
+package com.example.novelty.activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.vision.CameraSource;
@@ -20,7 +21,9 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
-public class ScanISBN extends MainActivity {
+import static android.os.Build.VERSION_CODES.R;
+
+public class ScanISBN extends AppCompatActivity {
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
