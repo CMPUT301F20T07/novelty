@@ -32,7 +32,7 @@ public class Login extends AppCompatActivity {
     FirebaseAuth fAuth; //provided by firebase used to register the user.
     ProgressBar progressBar;
 
-
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
