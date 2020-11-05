@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,17 +28,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Register extends AppCompatActivity {
-
     public static final String TAG = "TAG";
-
-    EditText myUsername, myEmail, myPassword, myPhone;
-    Button myRegisterBtn;
-    TextView myLoginLink; // used to direct user to login activity
-    String userID; //unique userID for current user
-    FirebaseAuth fAuth; //provided by firebase used to register the user.
-    FirebaseFirestore fStore;
-    ProgressBar progressBar;
-    String useless;
+    private EditText myUsername, myEmail, myPassword, myPhone;
+    private Button myRegisterBtn;
+    private TextView myLoginLink; // used to direct user to login activity
+    private FirebaseAuth fAuth; //provided by firebase used to register the user.
+    private ProgressBar progressBar;
+    private FirebaseFirestore fStore;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +50,8 @@ public class Register extends AppCompatActivity {
 
         myRegisterBtn = findViewById(R.id.register_button);
         myLoginLink = findViewById(R.id.login_link);
-
+        fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
-        fStore = FirebaseFirestore.getInstance();// get instance of fireStore
         progressBar = findViewById(R.id.progressBar);
 
         //returning user that is already logged in
@@ -66,25 +61,24 @@ public class Register extends AppCompatActivity {
         }
 
         //click the register button
-
         myRegisterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //get the values of all fields including email/password for authenticating later
-                String email = myEmail.getText().toString().trim(); // trim() eliminates leading and trailing spaces.
+                //get the values of all fields
+                final String email = myEmail.getText().toString().trim(); // trim() eliminates leading and trailing spaces.
                 String password = myPassword.getText().toString().trim();
-                String username = myUsername.getText().toString().trim();
-                String phone = myPhone.getText().toString();
+                final String username = myUsername.getText().toString();
+                final String phone = myPhone.getText().toString();
 
-                //validate the email and password
-                //check if there was something entered for email
+
+                //validate the email field not blank
                 if (TextUtils.isEmpty(email)){
                     //display error message
                     myEmail.setError("Email is required");
                     return ;
                 }
 
-                //check if there was something entered for password
+                // validate password field not blank
                 if (TextUtils.isEmpty(password)){
                     //display error message
                     myPassword.setError("Password is required");
@@ -105,37 +99,37 @@ public class Register extends AppCompatActivity {
                         //if task is successful then successfully created a user
                         //if not complete
                         if (task.isSuccessful()){
+
                             //small popup to show success
                             Toast.makeText(Register.this, "User Created", Toast.LENGTH_SHORT).show();
 
-                            // create/update users collections with documents of each user profile
+                            //add data to FireStore
                             userID = fAuth.getCurrentUser().getUid();
-                            DocumentReference documentReference = fStore.collection("users").document(userID);
+                            DocumentReference userDoc = Database.getUserRef(userID);
+                            Map<String,Object> user = new HashMap<>();
+                            user.put("username",username);
+                            user.put("email",email);
+                            user.put("phone",phone);
 
-                            //add user data using HashMap
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("username", myUsername);
-                            user.put("email", myEmail);
-                            user.put("phone", myPhone);
-
-                            //insert into cloud database
-                            documentReference
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                           userDoc.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "OnSuccess: user profile is created for "+ userID);
+                                    Log.d(TAG, "onSuccess: userProfile is created for "+ userID);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "onFailure: " + e.toString());
                                 }
                             });
-
 
                             //send user to main activity
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
 
                         }else
-                            Toast.makeText(Register.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.INVISIBLE); // on Error, Hide spinner
+                            Toast.makeText(Register.this, "Error" + task.getException(), Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE); // on Error, Hide spinner
                     }
                 }) ;
             }

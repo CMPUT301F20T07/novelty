@@ -22,15 +22,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Login extends AppCompatActivity {
-    EditText myEmail,
-            myPassword;
-    Button myLoginBtn;
-    TextView myRegLink,
-            forgotPassLink; //reset password link
-    FirebaseAuth fAuth; //provided by firebase used to register the user.
-    ProgressBar progressBar;
+public class Login extends AppCompatActivity{
+    private TextView myRegLink;
+    private EditText myEmail;
+    private EditText myPassword;
+    private Button myLoginBtn;
+    private TextView forgotPassLink;
+    private ProgressBar progressBar;
 
+    private FirebaseAuth fAuth; //provided by firebase used to register the user.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +40,15 @@ public class Login extends AppCompatActivity {
         // set views and buttons
         myEmail = findViewById(R.id.email_view);
         myPassword = findViewById((R.id.password_view));
+
         myLoginBtn = findViewById(R.id.login_button);
-
-
-        fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
-        progressBar = findViewById(R.id.progressBar);
         myRegLink = findViewById(R.id.register_link);
         forgotPassLink  = findViewById(R.id.forgot_password_link);
 
-        //click the register button
+        fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
+        progressBar = findViewById(R.id.progressBar);
+
+        //click the Login button
         //validate the users input
         myLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity {
                 if (TextUtils.isEmpty(email)){
                     //display error message
                     myEmail.setError("Email is required");
-                    return ;
+                    return;
                 }
 
                 //check if there was something entered for password
@@ -74,7 +74,7 @@ public class Login extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE); // show user that they are being logged in
 
-                 //authenticate user
+                //authenticate user
                 fAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -89,7 +89,7 @@ public class Login extends AppCompatActivity {
 
                         }else{
                             //if not complete
-                            Toast.makeText(Login.this, "Error" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.INVISIBLE); // on error, hide the spinner
                         }
                     }
@@ -102,7 +102,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //send user to Register activity
-                Intent intent = new Intent(getApplicationContext(), Register.class);
+                Intent intent = new Intent(Login.this, Register.class);
                 startActivity(intent);
             }
         });
@@ -112,7 +112,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText resetMail = new EditText(v.getContext());
-                AlertDialog.Builder passwordResetDialog  = new AlertDialog.Builder(v.getContext());
+                final AlertDialog.Builder passwordResetDialog  = new AlertDialog.Builder(v.getContext());
                 passwordResetDialog.setTitle("Reset Password");
                 passwordResetDialog.setMessage("Enter email to receive a reset password link");
                 passwordResetDialog.setView(resetMail);
@@ -142,15 +142,11 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //return to login activity.
-                        Intent intent = new Intent(getApplicationContext(), Login.class);
-                        startActivity(intent);
                     }
                 });
 
                 //show the user the dialog
                 passwordResetDialog.create().show();
-
-
 
             }
         });
