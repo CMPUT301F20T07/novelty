@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Novelty</string>
+    <string name="login_link">Already have an account? Login here</string>
+    <string name="register_button">REGISTER</string>
+    <string name="password_view">Password</string>
+    <string name="description_create_acc">Create an Account</string>
+    <string name="username_view">Username</string>
+    <string name="phone_number_view">Phone Number</string>
+    <string name="email_view">Email</string>
+    <string name="login_button">LOGIN</string>
+    <string name="create_acc_link">New? Register here</string>
+    <string name="description_login_activity">Login</string>
+    <string name="logout_btn">Logout</string>
+    <string name="forgot_pass_link">Forgot your password? Click here</string>
 </resources>
