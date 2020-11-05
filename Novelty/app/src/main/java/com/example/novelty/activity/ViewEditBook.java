@@ -1,4 +1,4 @@
-package com.example.novelty;
+package com.example.novelty.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.io.FileNotFoundException;
+import com.example.novelty.R;
+
 import java.io.IOException;
 
 public class ViewEditBook extends AppCompatActivity {
