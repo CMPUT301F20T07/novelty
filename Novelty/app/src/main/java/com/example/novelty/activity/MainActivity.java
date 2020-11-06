@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
-
+    private Toolbar mToolbar;
 
     boolean isOpen = false;
 
@@ -55,8 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fabRClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         fabRCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_counterclockwise);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        mToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
+
 
         drawerlayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation_view);
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerlayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -113,28 +116,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab_lend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You clicked on lend book", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Lend book", Toast.LENGTH_SHORT).show();
             }
         });
 
         fab_return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You clicked on return book", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Return book", Toast.LENGTH_SHORT).show();
             }
         });
 
         fab_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You clicked on view book details", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "View book details", Toast.LENGTH_SHORT).show();
             }
         });
 
         fab_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You clicked on confirm", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Confirm", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -146,6 +149,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent (getApplicationContext(), MyRequestActivity.class));
         finish(); //
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(toggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return true;
     }
 
     @Override
