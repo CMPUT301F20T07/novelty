@@ -24,6 +24,8 @@ public class ViewEditBook extends AppCompatActivity {
     private Button uploadPhotoButton;
     private Button deletePhotoButton;
     private ImageView photoView;
+    private Button cancelButton;
+    private Button saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class ViewEditBook extends AppCompatActivity {
         uploadPhotoButton = findViewById(R.id.btn_upload);
         deletePhotoButton = findViewById(R.id.btn_deletePhoto);
         photoView = findViewById(R.id.photoView);
+        cancelButton = findViewById(R.id.btn_cancel);
+        saveButton = findViewById(R.id.btn_save);
 
         photoView.setBackgroundColor(Color.LTGRAY);
 
@@ -48,6 +52,20 @@ public class ViewEditBook extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 photoView.setImageResource(0);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

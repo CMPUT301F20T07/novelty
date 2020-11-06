@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.novelty.R;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     boolean isOpen = false;
     private Intent mIntent;
+
+    private BottomAppBar bottomAppBar;
 
     @SuppressLint("NewApi")
     @Override
@@ -71,6 +74,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
+
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+
+        bottomAppBar.setOnMenuItemClickListener(new BottomAppBar.OnMenuItemClickListener() {
+                                                    @Override
+                                                    public boolean onMenuItemClick(MenuItem item) {
+                                                        switch (item.getItemId()) {
+                                                            case R.id.menuAdd:
+                                                                Intent addIntent = new Intent(MainActivity.this, ViewEditBook.class);
+                                                                startActivity(addIntent);
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+                                                        return true;
+                                                    }
+                                                });
 
 
         fab_scan.setOnClickListener(new View.OnClickListener() {
