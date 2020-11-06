@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.novelty">
-
+  
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.PERMISSIONS_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+  
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
       
-        <activity android:name=".activity.ViewEditBook"></activity>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+
+        <activity android:name=".activity.ViewEditBook" />
         <activity android:name=".activity.UploadPhoto" />
         <activity android:name=".activity.Login">
             <intent-filter>
@@ -24,18 +33,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Register">
+
+        <activity android:name=".activity.Register" />
+        <activity android:name=".activity.MainActivity"/>
+
+        <activity android:name=".activity.ScanISBN"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
+
+        <activity android:name=".activity.LendBook"
+            android:label="@string/app_name">
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW" />
+
+            </intent-filter>
         </activity>
+
+        <activity android:name=".activity.RecieveBook"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+            </intent-filter>
+        </activity>
+
         <activity android:name=".activity.RequstBooksActivity" />
-        <activity android:name=".activity.SearchBookActivity" >
-        </activity>
-        <activity android:name=".activity.SearchUserActivity" >
-        </activity>
+        <activity android:name=".activity.SearchBookActivity" />
+        <activity android:name=".activity.SearchUserActivity" />
         <activity android:name=".activity.RequestDetailsActivity" />
-        <activity android:name=".activity.MyRequestActivity" >
-        </activity>
+        <activity android:name=".activity.MyRequestActivity" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -50,6 +81,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-    </application>
 
+
+    </application>
+  
 </manifest>
