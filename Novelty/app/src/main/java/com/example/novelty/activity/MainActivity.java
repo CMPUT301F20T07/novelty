@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar mToolbar;
 
     boolean isOpen = false;
-
+    private Intent mIntent;
 
     @SuppressLint("NewApi")
     @Override
@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
 
         fab_scan.setOnClickListener(new View.OnClickListener() {
@@ -143,17 +141,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     //send user to Login activity once logged out.
-    public void logout (View view){
+    public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent (getApplicationContext(), MyRequestActivity.class));
+        startActivity(new Intent(getApplicationContext(), MyRequestActivity.class));
         finish(); //
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(toggle.onOptionsItemSelected(item)){
+        if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
         return true;
@@ -161,25 +158,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        mIntent = new Intent();
+        switch (item.getItemId()) {
             case R.id.nav_log_out:
                 Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_contact_info:
+
                 Toast.makeText(MainActivity.this, "Contact information", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_search_book:
-                Toast.makeText(MainActivity.this, "Search books", Toast.LENGTH_SHORT).show();
+                mIntent.setClass(MainActivity.this, SearchBookActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.nav_search_user:
-                Toast.makeText(MainActivity.this, "Search users", Toast.LENGTH_SHORT).show();
+                mIntent.setClass(MainActivity.this, SearchBookActivity.class);
+                startActivity(mIntent);
                 break;
             case R.id.nav_my_request:
-                Toast.makeText(MainActivity.this, "My request", Toast.LENGTH_SHORT).show();
+                mIntent.setClass(MainActivity.this, RequstBooksActivity.class);
+                startActivity(mIntent);
                 break;
+
         }
-
-
 
 
         return true;
