@@ -39,6 +39,8 @@ public class SearchBookActivity extends AppCompatActivity {
         mBookList.add(new BookBean("cinder","hexingjie","this is "));
         mBookList.add(new BookBean("cinder1","hexingjie1","this is2 "));
         mBookList.add(new BookBean("cinder2","hexingjie4","this is3 "));
+        mBookList.add(new BookBean("cinder3","hexingjie5","this is36"));
+        mBookList.add(new BookBean("cinder4","hexingjie7","this is7 "));
 
 
         adapter = new BookAdapter(mBookList, this, new BookAdapter.FilterListener() {

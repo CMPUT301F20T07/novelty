@@ -35,6 +35,8 @@ public class SearchUserActivity extends AppCompatActivity {
         list.add(new UserBean("jay","130"));
         list.add(new UserBean("user11","5062222"));
         list.add(new UserBean("user222","44444"));
+        list.add(new UserBean("user230","5555"));
+        list.add(new UserBean("user240","666666"));
         mSearchView.onActionViewExpanded();
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
