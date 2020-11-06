@@ -78,19 +78,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomAppBar = findViewById(R.id.bottomAppBar);
 
         bottomAppBar.setOnMenuItemClickListener(new BottomAppBar.OnMenuItemClickListener() {
-                                                    @Override
-                                                    public boolean onMenuItemClick(MenuItem item) {
-                                                        switch (item.getItemId()) {
-                                                            case R.id.menuAdd:
-                                                                Intent addIntent = new Intent(MainActivity.this, ViewEditBook.class);
-                                                                startActivity(addIntent);
-                                                                break;
-                                                            default:
-                                                                break;
-                                                        }
-                                                        return true;
-                                                    }
-                                                });
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menuAdd:
+                        Intent addIntent = new Intent(MainActivity.this, ViewEditBook.class);
+                        startActivity(addIntent);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
 
 
         fab_scan.setOnClickListener(new View.OnClickListener() {
