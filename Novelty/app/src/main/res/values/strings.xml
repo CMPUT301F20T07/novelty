@@ -12,4 +12,9 @@
     <string name="description_login_activity">Login</string>
     <string name="logout_btn">Logout</string>
     <string name="forgot_pass_link">Forgot your password? Click here</string>
+
+    <string name="open">Open navigation drawer</string>
+    <string name="close">Close navigation drawer</string>
+    <string name="nav_header_title">username</string>
+
 </resources>

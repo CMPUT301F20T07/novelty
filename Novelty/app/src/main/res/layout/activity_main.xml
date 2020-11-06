@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawerLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
+
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:textSize="18sp"
-                android:text="book name">
+                android:text="book name1">
 
             </TextView>
 
@@ -29,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:textSize="18sp"
-                android:text="book name">
+                android:text="book name2">
 
             </TextView>
 
@@ -38,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:textSize="18sp"
-                android:text="book name">
+                android:text="book name3">
 
             </TextView>
 
@@ -47,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:textSize="18sp"
-                android:text="book name">
+                android:text="book name4">
 
             </TextView>
 
@@ -56,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:textSize="18sp"
-                android:text="book name">
+                android:text="book name5">
 
             </TextView>
 
@@ -65,10 +82,48 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="30dp"
                 android:textSize="18sp"
-                android:text="book name">
+                android:text="book name6">
 
             </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:textSize="18sp"
+                android:text="book name7">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:textSize="18sp"
+                android:text="book name8">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:textSize="18sp"
+                android:text="book name9">
+
+            </TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:textSize="18sp"
+                android:text="book name10">
+
+            </TextView>
+
         </LinearLayout>
+
+
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.bottomappbar.BottomAppBar
@@ -82,5 +137,95 @@
         app:menu="@menu/app_bar_menu"
         app:navigationIcon="@drawable/ic_filter" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flt_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="60dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_return"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="mini"
+        app:maxImageSize="35dp"
+        app:pressedTranslationZ="12dp"
+        app:tint="@color/colorGrey"
+        android:visibility="invisible"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flt_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="130dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginLeft="90dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_confirm"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="mini"
+        app:maxImageSize="35dp"
+        app:pressedTranslationZ="12dp"
+        app:tint="@color/colorGrey"
+        android:visibility="invisible"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="130dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginRight="90dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_view"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="mini"
+        app:maxImageSize="35dp"
+        app:pressedTranslationZ="12dp"
+        app:tint="@color/colorGrey"
+        android:visibility="invisible"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flt_lend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="60dp"
+        android:elevation="6dp"
+        android:src="@drawable/ic_lend"
+        app:backgroundTint="@color/colorAccent"
+        app:fabSize="mini"
+        app:maxImageSize="35dp"
+        app:pressedTranslationZ="12dp"
+        app:tint="@color/colorGrey"
+        android:visibility="invisible"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/flt_scan"
+        app:backgroundTint="@color/colorAccent"
+        android:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_scan"
+        app:tint="@color/colorWhite"
+        app:layout_anchor="@id/bottomAppBar"
+        app:maxImageSize="35dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/navigation_view"
+        app:menu="@menu/main_menu"
+        app:headerLayout="@layout/header"
+        app:itemTextAppearance="?android:attr/textAppearanceLargeInverse"
+        android:layout_gravity="start"
+
+        />
+</androidx.drawerlayout.widget.DrawerLayout>

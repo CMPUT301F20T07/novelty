@@ -1,26 +1,44 @@
 package com.example.novelty.activity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.novelty.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Objects;
+
+import static java.util.Objects.requireNonNull;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton fab_scan, fab_lend, fab_return, fab_view, fab_confirm;
     Animation fabOpen, fabClose, fabRClockwise, fabRCounterClockwise;
 
+    private DrawerLayout drawerlayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView navigationView;
+
+
+
     boolean isOpen = false;
 
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +54,23 @@ public class MainActivity extends AppCompatActivity {
         fabClose = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
         fabRClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_clockwise);
         fabRCounterClockwise = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_counterclockwise);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawerlayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigation_view);
+
+        toggle = new ActionBarDrawerToggle(this, drawerlayout, R.string.open, R.string.close);
+
+        drawerlayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+
 
         fab_scan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,10 +140,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     //send user to Login activity once logged out.
     public void logout (View view){
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent (getApplicationContext(), MyRequestActivity.class));
         finish(); //
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.nav_log_out:
+                Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_contact_info:
+                Toast.makeText(MainActivity.this, "Contact information", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_search_book:
+                Toast.makeText(MainActivity.this, "Search books", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_search_user:
+                Toast.makeText(MainActivity.this, "Search users", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_my_request:
+                Toast.makeText(MainActivity.this, "My request", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+
+
+
+        return true;
     }
 }
