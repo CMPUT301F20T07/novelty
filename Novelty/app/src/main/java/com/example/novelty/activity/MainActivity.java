@@ -1,4 +1,4 @@
-package com.example.novelty;
+package com.example.novelty.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.novelty.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     //send user to Login activity once logged out.
     public void logout (View view){
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent (this,  Login.class));
+        startActivity(new Intent (getApplicationContext(), MyRequestActivity.class));
         finish(); //
     }
 }
