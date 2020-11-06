@@ -34,9 +34,15 @@ public class MyRequestActivity extends AppCompatActivity {
         RequestBean requested2 = new RequestBean("requested", userBean1);
         UserBean userBean3 = new UserBean("333333", "333333");
         RequestBean requested3 = new RequestBean("requested", userBean3);
+        UserBean userBean4 = new UserBean("444444", "4444444");
+        RequestBean requested4 = new RequestBean("requested", userBean4);
+        UserBean userBean5 = new UserBean("5555555", "555555");
+        RequestBean requested5 = new RequestBean("requested", userBean5);
         mRequest.add(requested);
         mRequest.add(requested2);
         mRequest.add(requested3);
+        mRequest.add(requested4);
+        mRequest.add(requested5);
         listView.setAdapter(new RequetsAdapter(mRequest, this));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -172,11 +172,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(mIntent);
                 break;
             case R.id.nav_search_user:
-                mIntent.setClass(MainActivity.this, SearchBookActivity.class);
+                mIntent.setClass(MainActivity.this, SearchUserActivity.class);
                 startActivity(mIntent);
                 break;
             case R.id.nav_my_request:
-                mIntent.setClass(MainActivity.this, RequstBooksActivity.class);
+                mIntent.setClass(MainActivity.this, MyRequestActivity.class);
                 startActivity(mIntent);
                 break;
 
