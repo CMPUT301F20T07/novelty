@@ -36,9 +36,9 @@ public class SearchBookActivity extends AppCompatActivity {
         searchView.onActionViewExpanded();
         searchView.setIconifiedByDefault(false);
         mListView = findViewById(R.id.listBook);
-        mBookList.add(new BookBean("cinder","hexingjie","this is "));
-        mBookList.add(new BookBean("cinder1","hexingjie1","this is2 "));
-        mBookList.add(new BookBean("cinder2","hexingjie4","this is3 "));
+        mBookList.add(new BookBean("cinder", "hexingjie", "this is "));
+        mBookList.add(new BookBean("cinder1", "hexingjie1", "this is2 "));
+        mBookList.add(new BookBean("cinder2", "hexingjie4", "this is3 "));
 
 
         adapter = new BookAdapter(mBookList, this, new BookAdapter.FilterListener() {
