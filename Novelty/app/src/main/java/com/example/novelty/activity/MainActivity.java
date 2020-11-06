@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //send user to Login activity once logged out.
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), MyRequestActivity.class));
+        startActivity(new Intent(getApplicationContext(), Login.class));
         finish(); //
     }
 
@@ -161,10 +161,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mIntent = new Intent();
         switch (item.getItemId()) {
             case R.id.nav_log_out:
+                //send user to Login activity once logged out.
                 Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                logout(findViewById(R.id.nav_log_out));
                 break;
-            case R.id.nav_contact_info:
 
+            case R.id.nav_contact_info:
                 Toast.makeText(MainActivity.this, "Contact information", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_search_book:
