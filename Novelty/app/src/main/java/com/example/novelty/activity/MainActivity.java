@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menuAdd:
-                        Intent addIntent = new Intent(MainActivity.this, ViewEditBook.class);
+                        Intent addIntent = new Intent(MainActivity.this, AddBook.class);
                         startActivity(addIntent);
                         break;
                     default:
