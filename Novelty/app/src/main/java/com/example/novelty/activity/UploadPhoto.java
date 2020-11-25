@@ -1,6 +1,7 @@
 package com.example.novelty.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +31,9 @@ import java.io.IOException;
 
 public class UploadPhoto extends AppCompatActivity {
 
+    private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA };
+
     private Button albumButton;
     private Button cameraButton;
     private Button confirmButton;
@@ -45,6 +50,11 @@ public class UploadPhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_photo);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+
         cameraButton = (Button) findViewById(R.id.btn_camera);
         albumButton = (Button) findViewById(R.id.btn_album);
         confirmButton = (Button) findViewById(R.id.btn_confirm);
@@ -54,29 +64,33 @@ public class UploadPhoto extends AppCompatActivity {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File uploadImage = new File(getExternalCacheDir(), "upload_img.jpg");
+                if(verifyPermissions(UploadPhoto.this, PERMISSIONS_STORAGE[2]) == 0) {
+                    ActivityCompat.requestPermissions(UploadPhoto.this, PERMISSIONS_STORAGE, 3);
+                }else{
+                    File uploadImage = new File(getExternalCacheDir(), "upload_img.jpg");
 
-                try {
-                    if (uploadImage.exists()) {
-                        uploadImage.delete();
+                    try {
+                        if (uploadImage.exists()) {
+                            uploadImage.delete();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        imageUri = FileProvider.getUriForFile(UploadPhoto.this, "com.feige.pickphoto.fileprovider", uploadImage);
+                    } else {
+                        imageUri = Uri.fromFile(uploadImage);
+                    }
+
+                    Intent intent;
+                    intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(intent, TAKE_CAMERA);
                 }
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    imageUri = FileProvider.getUriForFile(UploadPhoto.this, "com.feige.pickphoto.fileprovider", uploadImage);
-                } else {
-                    imageUri = Uri.fromFile(uploadImage);
-                }
-
-                Intent intent;
-                intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(intent, TAKE_CAMERA);
-
             }
         });
+
 
         albumButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +107,7 @@ public class UploadPhoto extends AppCompatActivity {
             }
         });
 
+
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,28 +120,6 @@ public class UploadPhoto extends AppCompatActivity {
             }
         });
 
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case TAKE_CAMERA:
-                if (grantResults.length == 2 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent;
-                    intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, TAKE_CAMERA);
-                }
-                break;
-
-            case PICK_PHOTO:
-                Intent intent = new Intent(Intent.ACTION_PICK, null);
-                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, PICK_PHOTO);
-                break;
-        }
     }
 
 
@@ -160,6 +153,16 @@ public class UploadPhoto extends AppCompatActivity {
 
             default:
                 break;
+        }
+    }
+
+
+    public int verifyPermissions(Activity activity, java.lang.String permission) {
+        int Permission = ActivityCompat.checkSelfPermission(activity,permission);
+        if (Permission == PackageManager.PERMISSION_GRANTED) {
+            return 1;
+        }else{
+            return 0;
         }
     }
 
