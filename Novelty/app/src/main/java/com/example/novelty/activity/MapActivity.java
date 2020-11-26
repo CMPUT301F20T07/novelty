@@ -41,6 +41,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         double lat = 40.73;
         double lng = -73.99;
+        
         LatLng appointLoc = new LatLng(lat, lng);
 
         // 移动地图到指定经度的位置
