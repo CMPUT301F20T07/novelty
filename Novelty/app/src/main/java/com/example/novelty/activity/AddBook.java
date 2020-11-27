@@ -58,6 +58,8 @@ public class AddBook extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent data = new Intent();
+                setResult(1, data);
                 finish();
             }
         });
@@ -65,6 +67,8 @@ public class AddBook extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent data = new Intent();
+                setResult(2,data);
                 finish();
             }
         });

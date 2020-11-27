@@ -81,7 +81,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_upload" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editBookTitle"
         android:layout_width="288dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
