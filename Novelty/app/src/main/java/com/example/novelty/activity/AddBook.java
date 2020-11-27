@@ -1,5 +1,6 @@
 package com.example.novelty.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,13 +10,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.novelty.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddBook extends AppCompatActivity {
 
@@ -26,6 +35,13 @@ public class AddBook extends AppCompatActivity {
     private ImageView photoView;
     private Button cancelButton;
     private Button saveButton;
+    private TextView status;
+    private TextView description;
+    private TextView author;
+    private TextView holder;
+    private TextView book_name;
+    private TextView ISBN;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +53,12 @@ public class AddBook extends AppCompatActivity {
         photoView = findViewById(R.id.photoView);
         cancelButton = findViewById(R.id.btn_cancel);
         saveButton = findViewById(R.id.btn_save);
+        
+        description = findViewById(R.id.editTextTextMultiLine);
+        author = findViewById(R.id.editTextAuthor);
+        holder = findViewById(R.id.editTextHolder);
+        book_name = findViewById(R.id.editTextTextPersonName);
+        ISBN = findViewById(R.id.editTextISBN);
 
         photoView.setBackgroundColor(Color.LTGRAY);
 
@@ -61,10 +83,20 @@ public class AddBook extends AppCompatActivity {
                 finish();
             }
         });
-
+        final Map<String,Object> book = new HashMap<>();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                book.put("ISBN", ISBN.getText().toString());
+                book.put("book_name", book_name.getText().toString());
+                book.put("holder", holder.getText().toString());
+                book.put("author", author.getText().toString());
+                book.put("description", description.getText().toString());
+
+
+
+
+                Database.getBookInfo(ISBN.getText().toString()).set(book);
                 finish();
             }
         });

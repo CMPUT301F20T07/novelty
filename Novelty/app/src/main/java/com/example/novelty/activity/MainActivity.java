@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Lend book", Toast.LENGTH_SHORT).show();
+                Intent lend_intent = new Intent(getApplicationContext(), LendBook.class);
+                startActivityForResult(lend_intent, 1);
             }
         });
 
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Return book", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -156,6 +159,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Confirm", Toast.LENGTH_SHORT).show();
+                Intent lend_intent = new Intent(getApplicationContext(), LendBook.class);
+                startActivityForResult(lend_intent, 1);
             }
         });
     }
