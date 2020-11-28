@@ -70,5 +70,6 @@ public class RequetsAdapter extends BaseAdapter {
         TextView tv_title, tv_author, tv_description, tv_owner;
     }
 
+
 }
 
