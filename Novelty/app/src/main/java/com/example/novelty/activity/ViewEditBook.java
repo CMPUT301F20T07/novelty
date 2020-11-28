@@ -10,16 +10,20 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
 
 import java.io.IOException;
 
-public class ViewEditBook extends AppCompatActivity {
+public class ViewEditBook extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     public static final int UPLOAD_PHOTO = 100;
 
@@ -41,6 +45,14 @@ public class ViewEditBook extends AppCompatActivity {
         cancelButton = findViewById(R.id.btn_cancel);
         saveButton = findViewById(R.id.btn_save);
         editBookTitle = findViewById(R.id.editBookTitle);
+
+        Spinner spinner = findViewById(R.id.status_spinner2);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.status, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
 
         BookBean book = (BookBean) getIntent().getSerializableExtra("book");
         editBookTitle.setText(book.getTitle());
@@ -105,5 +117,15 @@ public class ViewEditBook extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String statusNow = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), statusNow, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 

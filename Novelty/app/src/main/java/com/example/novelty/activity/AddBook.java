@@ -12,10 +12,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.novelty.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +30,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddBook extends AppCompatActivity {
+public class AddBook extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     public static final int UPLOAD_PHOTO = 100;
 
@@ -53,7 +57,8 @@ public class AddBook extends AppCompatActivity {
         photoView = findViewById(R.id.photoView);
         cancelButton = findViewById(R.id.btn_cancel);
         saveButton = findViewById(R.id.btn_save);
-        
+        Spinner spinner = findViewById(R.id.status_spinner1);
+
         description = findViewById(R.id.editTextTextMultiLine);
         author = findViewById(R.id.editTextAuthor);
         holder = findViewById(R.id.editTextHolder);
@@ -61,6 +66,11 @@ public class AddBook extends AppCompatActivity {
         ISBN = findViewById(R.id.editTextISBN);
 
         photoView.setBackgroundColor(Color.LTGRAY);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.status, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         uploadPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,5 +136,15 @@ public class AddBook extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String statusNow = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), statusNow, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 
