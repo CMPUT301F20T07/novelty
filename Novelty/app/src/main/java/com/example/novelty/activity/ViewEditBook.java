@@ -11,9 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.novelty.R;
+import com.example.novelty.bean.BookBean;
 
 import java.io.IOException;
 
@@ -26,6 +28,7 @@ public class ViewEditBook extends AppCompatActivity {
     private ImageView photoView;
     private Button cancelButton;
     private Button saveButton;
+    private EditText editBookTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,10 @@ public class ViewEditBook extends AppCompatActivity {
         photoView = findViewById(R.id.photoView);
         cancelButton = findViewById(R.id.btn_cancel);
         saveButton = findViewById(R.id.btn_save);
+        editBookTitle = findViewById(R.id.editBookTitle);
+
+        BookBean book = (BookBean) getIntent().getSerializableExtra("book");
+        editBookTitle.setText(book.getTitle());
 
         photoView.setBackgroundColor(Color.LTGRAY);
 
@@ -58,6 +65,8 @@ public class ViewEditBook extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent data = new Intent();
+                setResult(1, data);
                 finish();
             }
         });
@@ -65,6 +74,8 @@ public class ViewEditBook extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent data = new Intent();
+                setResult(2,data);
                 finish();
             }
         });
