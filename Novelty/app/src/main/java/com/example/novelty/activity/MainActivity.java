@@ -154,6 +154,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
 
+        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //call the FilterDialog class to show the dialog fragment
+                new FilterDialog().show(getSupportFragmentManager(), "filterdialog");
+
+            }
+        });
+
         bottomAppBar.setOnMenuItemClickListener(new BottomAppBar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
