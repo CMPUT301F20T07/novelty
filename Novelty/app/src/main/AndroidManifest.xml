@@ -29,14 +29,16 @@
         <activity android:name=".activity.ViewEditBook" />
         <activity android:name=".activity.UploadPhoto" />
         <activity android:name=".activity.Login">
+        </activity>
+        <activity android:name=".activity.Register" />
+        <activity android:name=".activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".activity.Register" />
-        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.ScanISBN"
             android:label="@string/app_name">

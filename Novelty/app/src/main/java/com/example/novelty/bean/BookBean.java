@@ -17,10 +17,11 @@ public class BookBean {
         this.title = title;
     }
 
-    public BookBean(String title, String author, String description) {
+    public BookBean(String title, String description, String status, String owner) {
         this.title = title;
-        this.author = author;
         this.description = description;
+        this.status = status;
+        this.owner = owner;
     }
 
     public String getTitle() {

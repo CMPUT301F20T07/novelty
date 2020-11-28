@@ -1,6 +1,8 @@
 package com.example.novelty.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+
 import android.os.Bundle;
 import com.example.novelty.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -15,12 +17,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_map);
+        searchView = findViewById(R.id.searchView);
 
         MapView mMap = (MapView) findViewById(R.id.map);
         mMap.onCreate(savedInstanceState);
@@ -36,6 +39,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else {
             mMap.getMapAsync(this);
         }
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -52,4 +69,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     }
+
+
 }

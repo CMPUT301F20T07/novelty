@@ -57,12 +57,14 @@ public class BookAdapter extends BaseAdapter implements Filterable {
             holder.tv_author = (TextView) convertView.findViewById(R.id.tv_author);
             holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
             holder.tv_description = (TextView) convertView.findViewById(R.id.tv_description);
+            holder.tv_owner = (TextView) convertView.findViewById(R.id.tv_owner);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        holder.tv_author.setText(list.get(position).getAuthor());
-        holder.tv_title.setText(list.get(position).getTitle());
-        holder.tv_description.setText(list.get(position).getDescription());
+        holder.tv_author.setText("status:" + list.get(position).getStatus());
+        holder.tv_title.setText("bookName:" + list.get(position).getTitle());
+        holder.tv_description.setText("description:" + list.get(position).getDescription());
+        holder.tv_owner.setText("Owner:" + list.get(position).getOwner());
         return convertView;
     }
 
@@ -116,7 +118,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
     }
 
     class ViewHolder {
-        TextView tv_title, tv_author, tv_description;
+        TextView tv_title, tv_author, tv_description, tv_owner;
     }
 
     public interface FilterListener {

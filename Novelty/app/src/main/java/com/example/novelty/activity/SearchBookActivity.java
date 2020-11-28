@@ -5,6 +5,7 @@ import androidx.appcompat.widget.SearchView;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,11 +37,11 @@ public class SearchBookActivity extends AppCompatActivity {
         searchView.onActionViewExpanded();
         searchView.setIconifiedByDefault(false);
         mListView = findViewById(R.id.listBook);
-        mBookList.add(new BookBean("cinder","hexingjie","this is "));
-        mBookList.add(new BookBean("cinder1","hexingjie1","this is2 "));
-        mBookList.add(new BookBean("cinder2","hexingjie4","this is3 "));
-        mBookList.add(new BookBean("cinder3","hexingjie5","this is36"));
-        mBookList.add(new BookBean("cinder4","hexingjie7","this is7 "));
+        mBookList.add(new BookBean("To Kill a Mockingbird", "when I resent the size of my unbounded set, I want more numbers than I’m likely to get, and God", "request", "John Green"));
+        mBookList.add(new BookBean("The Silent Patient", "There are infinite numbers between 0 and 1,You gave me a forever within the numbered days", "request ", "John Green"));
+        mBookList.add(new BookBean("Tuesdays with Morrie", "It was Tuesday", "request", "Mitch Albom"));
+        mBookList.add(new BookBean("Sweetbitter", "Bitter, always a bit anticipated.The mouth still hesitates at each new encounter.We urge it forward, say, Adapt. Now, enjoy it.", "this is36", "Stephanie Danler"));
+        mBookList.add(new BookBean("Lord of the flies", "Funerals are not for the dead,they are for the living.", "request", "William Golding"));
 
 
         adapter = new BookAdapter(mBookList, this, new BookAdapter.FilterListener() {
@@ -54,6 +55,13 @@ public class SearchBookActivity extends AppCompatActivity {
 
         mListView.setAdapter(adapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dialogShow(mBookList.get(i));
+
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -93,7 +101,7 @@ public class SearchBookActivity extends AppCompatActivity {
 
         tv_book_title.setText(bookBean.getTitle());
         tv_description.setText(bookBean.getDescription());
-        tv_owner.setText(bookBean.getOwner());
+        tv_owner.setText("ownerd by" + bookBean.getOwner());
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setContentView(v);
@@ -103,7 +111,9 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Toast.makeText(SearchBookActivity.this, "ok", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SearchBookActivity.this, MapActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -112,7 +122,6 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 dialog.dismiss();
-                Toast.makeText(SearchBookActivity.this, "no", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -44,25 +44,30 @@ public class RequetsAdapter extends BaseAdapter {
         return position;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_listview_request, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_listview_search, null);
             holder = new ViewHolder();
-            holder.tv_status = (TextView) convertView.findViewById(R.id.tv_status);
-            holder.tv_from = (TextView) convertView.findViewById(R.id.tv_from);
+            holder.tv_author = (TextView) convertView.findViewById(R.id.tv_author);
+            holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+            holder.tv_description = (TextView) convertView.findViewById(R.id.tv_description);
+            holder.tv_owner = (TextView) convertView.findViewById(R.id.tv_owner);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        holder.tv_from.setText(list.get(position).getFrom().getUsername());
-        holder.tv_status.setText(list.get(position).getStatus());
+        holder.tv_author.setText("status:" + list.get(position).getStatus());
+        holder.tv_title.setText("bookName:" + list.get(position).getBook());
+        holder.tv_description.setText("owner:" + list.get(position).getOwer());
+        holder.tv_owner.setText("from:" + list.get(position).getFrom());
         return convertView;
     }
 
 
     class ViewHolder {
-        TextView tv_status, tv_from;
+        TextView tv_title, tv_author, tv_description, tv_owner;
     }
 
 }
