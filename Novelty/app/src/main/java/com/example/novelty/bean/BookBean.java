@@ -1,8 +1,9 @@
 package com.example.novelty.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BookBean {
+public class BookBean implements Serializable {
     String title;
     String author;
     String ISBN;

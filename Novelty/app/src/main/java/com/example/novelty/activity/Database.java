@@ -3,6 +3,8 @@ package com.example.novelty.activity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 //import com.google.firebase.storage.FirebaseStorage;
 //import com.google.firebase.storage.StorageReference;
 
@@ -19,6 +21,14 @@ public class Database {
     public static DocumentReference getUserRef(String userID) {
         return Database.db.collection("users")
                 .document(userID);
+    }
+
+    public static DocumentReference getBookInfo(String ISBN) {
+        return Database.db.collection("books")
+                .document(ISBN);
+    }
+    public static void addBookInfo(HashMap book, String ISBN) {
+        Database.db.collection("books").document(ISBN).set(book);
     }
 
     /**
@@ -90,4 +100,5 @@ public class Database {
         return Database.db.collection("users")
                 .document(userID).collection("my accepted requests");
     }
+
 }
