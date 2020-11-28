@@ -3,6 +3,7 @@ package com.example.novelty.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -16,20 +17,36 @@ public class FilterDialog extends DialogFragment {
 
     @NonNull
     @Override
-   public Dialog onCreateDialog (@Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        final String [] status = getActivity().getResources().getStringArray(R.array.status);
+        final String[] status = getActivity().getResources().getStringArray(R.array.status);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setItems(status, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-                Toast.makeText(getActivity(), "you choose: " + status[i], Toast.LENGTH_SHORT).show();
+                Intent intent;
+                switch (i) {
+                    case 0:
+                        break;
+                    case 1:
+                        intent = new Intent(getActivity(), MyAcceptActivity.class);
+
+                        getActivity().startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(getActivity(), MyRequestActivity.class);
+                        getActivity().startActivity(intent);
+                        break;
+                    case 3:
+                        break;
+                }
+
             }
         });
 
         return builder.create();
 
-   }
+    }
 }

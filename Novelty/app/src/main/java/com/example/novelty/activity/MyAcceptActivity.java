@@ -71,11 +71,19 @@ public class MyAcceptActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.request_book_dialog, null);
         ListView listview = (ListView) v.findViewById(R.id.listview);
-        listview.setAdapter(new UserAdapter(bookBean, this));
+        UserAdapter userAdapter = new UserAdapter(bookBean, this);
+        listview.setAdapter(userAdapter);
+
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setContentView(v);
         dialog.getWindow().setGravity(Gravity.CENTER);
+        userAdapter.setListener(new UserAdapter.Call() {
+            @Override
+            public void close() {
+                dialog.dismiss();
+            }
+        });
     }
 
 }

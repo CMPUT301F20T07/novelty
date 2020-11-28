@@ -2,10 +2,14 @@ package com.example.novelty.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.NotificationCompat;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -98,7 +102,6 @@ public class SearchBookActivity extends AppCompatActivity {
         TextView tv_owner = (TextView) v.findViewById(R.id.tv_owner);
         TextView tv_book_title = (TextView) v.findViewById(R.id.tv_book_title);
 
-
         tv_book_title.setText(bookBean.getTitle());
         tv_description.setText(bookBean.getDescription());
         tv_owner.setText("ownerd by" + bookBean.getOwner());
@@ -107,13 +110,20 @@ public class SearchBookActivity extends AppCompatActivity {
         dialog.getWindow().setContentView(v);
         dialog.getWindow().setGravity(Gravity.CENTER);
         btn_sure.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 dialog.dismiss();
-                Intent intent = new Intent(SearchBookActivity.this, MapActivity.class);
-                startActivity(intent);
-                finish();
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                Notification notification = new NotificationCompat.Builder(SearchBookActivity.this)//此处会有中间一道线，并不影响运行，这是android系统版本的问题
+                          .setContentTitle("request success")  //显示通知的标题
+                          .setContentText("books")//显示消息通知的内容
+                          .setWhen(System.currentTimeMillis())//显示通知的具体时间
+                          .setSmallIcon(R.mipmap.ic_launcher)//这里设置显示的是手机顶部系统通知的应用图标
+                          .setLargeIcon(BitmapFactory.decodeResource(SearchBookActivity.this.getResources(), R.mipmap.ic_launcher))//这里设置显示的是下拉通知栏后显示的系统图标
+                          //.setAutoCancel(true)//可以在此使用此方法，点击通知后，通知内容自动取消,也可以在NotificationActivity.java中设置方法取消显示通知内容
+                          .setVibrate(new long[]{0, 1000, 1000, 1000})//设置发出通知后震动一秒，停止一秒后再震动一秒，需要在manifest.xml中设置权限
+                          .build();
+                manager.notify(1, notification);
             }
         });
 

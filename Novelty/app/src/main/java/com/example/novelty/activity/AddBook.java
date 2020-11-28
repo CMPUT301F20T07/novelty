@@ -104,8 +104,6 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                 book.put("description", description.getText().toString());
 
 
-
-
                 Database.getBookInfo(ISBN.getText().toString()).set(book);
                 finish();
             }

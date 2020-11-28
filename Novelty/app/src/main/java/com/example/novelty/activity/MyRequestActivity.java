@@ -28,16 +28,22 @@ public class MyRequestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         listView = findViewById(R.id.listRequest);
+        List<UserBean> userBeans = new ArrayList<>();
+
         UserBean userBean = new UserBean("111111", "111111");
-        RequestBean requested = new RequestBean("requested", userBean);
         UserBean userBean1 = new UserBean("22222", "2222222");
-        RequestBean requested2 = new RequestBean("requested", userBean1);
         UserBean userBean3 = new UserBean("333333", "333333");
-        RequestBean requested3 = new RequestBean("requested", userBean3);
         UserBean userBean4 = new UserBean("444444", "4444444");
-        RequestBean requested4 = new RequestBean("requested", userBean4);
-        UserBean userBean5 = new UserBean("5555555", "555555");
-        RequestBean requested5 = new RequestBean("requested", userBean5);
+
+        userBeans.add(userBean);
+        userBeans.add(userBean1);
+        userBeans.add(userBean3);
+        userBeans.add(userBean4);
+        RequestBean requested = new RequestBean("requested", userBeans);
+        RequestBean requested2 = new RequestBean("requested", userBeans);
+        RequestBean requested3 = new RequestBean("requested", userBeans);
+        RequestBean requested4 = new RequestBean("requested", userBeans);
+        RequestBean requested5 = new RequestBean("requested", userBeans);
         mRequest.add(requested);
         mRequest.add(requested2);
         mRequest.add(requested3);
