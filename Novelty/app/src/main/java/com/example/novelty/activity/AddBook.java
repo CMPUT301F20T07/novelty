@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -123,8 +124,29 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
             public void onClick(View v) {
 
                 String ISBN = editISBN.getText().toString();
+                // make ISBN required
+                if (TextUtils.isEmpty(ISBN)){
+                    //display error message
+                    editISBN.setError("ISBN is required");
+                    return;
+                }
+
                 String author = editAuthor.getText().toString();
+                // make author required
+                if (TextUtils.isEmpty(author)){
+                    //display error message
+                    editAuthor.setError("author is required");
+                    return;
+                }
+
                 String title = editBookTitle.getText().toString();
+                // make title required
+                if (TextUtils.isEmpty(title)){
+                    //display error message
+                    editBookTitle.setError("author is required");
+                    return;
+                }
+
                 String holder = editHolder.getText().toString();
                 String description = editDescription.getText().toString();
                 String status = spinner.getSelectedItem().toString();
