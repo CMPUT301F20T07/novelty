@@ -1,5 +1,8 @@
 package com.example.novelty.bean;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,11 +14,23 @@ public class BookBean implements Serializable {
     String status;
     String owner;
     String borrower;
-    String photograph;
+    String holder;
+    Bitmap photo;
+    Uri photoUri;
+
     private ArrayList<RequestBean> requests;
 
     public BookBean(String title) {
         this.title = title;
+        this.author = null;
+        this.ISBN = null;
+        this.description = null;
+        this.owner = null;
+        this.borrower = null;
+        this.holder = null;
+        this.owner = null;
+        this.photo = null;
+        this.photoUri = null;
     }
 
     public BookBean(String title, String description, String status, String owner) {
@@ -23,6 +38,35 @@ public class BookBean implements Serializable {
         this.description = description;
         this.status = status;
         this.owner = owner;
+        this.ISBN = null;
+        this.borrower = null;
+        this.holder = null;
+        this.photo = null;
+        this.photoUri = null;
+    }
+
+    public String getHolder() {
+        return holder;
+    }
+
+    public void setHolder(String holder) {
+        this.holder = holder;
+    }
+
+    public Bitmap getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
+    }
+
+    public Uri getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(Uri photoUri) {
+        this.photoUri = photoUri;
     }
 
     public String getTitle() {
@@ -57,10 +101,6 @@ public class BookBean implements Serializable {
         return requests;
     }
 
-    public String getPhotograph() {
-        return photograph;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -89,7 +129,4 @@ public class BookBean implements Serializable {
         this.borrower = borrower;
     }
 
-    public void setPhotograph(String photograph) {
-        this.photograph = photograph;
-    }
 }

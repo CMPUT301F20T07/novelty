@@ -20,9 +20,9 @@ public class CustomList_Book extends ArrayAdapter<BookBean> {
     private ArrayList<BookBean> books;
     private Context context;
 
-    public CustomList_Book(Context context, ArrayList<BookBean> cities){
-        super(context,0, cities);
-        this.books = cities;
+    public CustomList_Book(Context context, ArrayList<BookBean> books){
+        super(context,0, books);
+        this.books = books;
         this.context = context;
     }
 
