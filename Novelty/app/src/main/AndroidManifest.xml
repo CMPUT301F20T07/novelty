@@ -28,6 +28,7 @@
         <activity android:name=".activity.AddBook" />
         <activity android:name=".activity.ViewEditBook" />
         <activity android:name=".activity.UploadPhoto" />
+        <activity android:name=".activity.ScanToView" />
         <activity android:name=".activity.Login"></activity>
         <activity android:name=".activity.Register" />
         <activity android:name=".activity.MainActivity">
@@ -36,6 +37,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
 
         </activity>
         <activity

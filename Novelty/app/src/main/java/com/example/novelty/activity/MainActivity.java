@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +30,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final int VIEW_EDIT_BOOK = 111;
     public static final int ADD_BOOK = 112;
+    public static final int SCAN_VIEW = 113;
 
     FloatingActionButton fab_scan, fab_lend, fab_return, fab_view, fab_confirm;
     Animation fabOpen, fabClose, fabRClockwise, fabRCounterClockwise;
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Intent mIntent;
 
     private BottomAppBar bottomAppBar;
+
+    //public static TextView resultText;
 
     @SuppressLint("NewApi")
     @Override
@@ -242,10 +247,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        //scan to view book description
+        //resultText = findViewById(R.id.scan_result);
         fab_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "View book details", Toast.LENGTH_SHORT).show();
+                Intent scanViewIntent = new Intent(getApplicationContext(), ScanToView.class);
+                startActivityForResult(scanViewIntent, SCAN_VIEW);
+
             }
         });
 
@@ -274,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return true;
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
