@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -36,8 +42,8 @@ import static java.util.Objects.requireNonNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int VIEW_EDIT_BOOK = 100101;
-    public static final int ADD_BOOK = 100102;
+    public static final int VIEW_EDIT_BOOK = 111;
+    public static final int ADD_BOOK = 112;
 
     FloatingActionButton fab_scan, fab_lend, fab_return, fab_view, fab_confirm;
     Animation fabOpen, fabClose, fabRClockwise, fabRCounterClockwise;
@@ -89,11 +95,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         BookBean book14 = new BookBean("Book 14");
         BookBean book15 = new BookBean("Book 15");
 
+        BookBean bookTest = new BookBean("Test View Edit");
+        bookTest.setAuthor("David");
+        bookTest.setOwner("Mario");
+        bookTest.setDescription("This is a Description `````````````````````````````````````````````");
+
         bookDataList.add(book1);
         bookDataList.add(book2);
         bookDataList.add(book3);
         bookDataList.add(book4);
         bookDataList.add(book5);
+
+        bookDataList.add(bookTest);
+
         bookDataList.add(book6);
         bookDataList.add(book7);
         bookDataList.add(book8);
@@ -107,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         bookAdapter.notifyDataSetChanged();
 
+        //test===============================================
+
 
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -117,12 +133,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent viewEditIntent = new Intent(MainActivity.this, ViewEditBook.class);
                 viewEditIntent.putExtra("book", book);
-                startActivity(viewEditIntent);
-                //startActivityForResult(viewEditIntent, VIEW_EDIT_BOOK);
+                startActivityForResult(viewEditIntent, VIEW_EDIT_BOOK);
             }
         });
-
-        //test===============================================
 
 
         fab_scan = findViewById(R.id.flt_scan);
@@ -160,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (item.getItemId()) {
                     case R.id.menuAdd:
                         Intent addIntent = new Intent(MainActivity.this, AddBook.class);
-                        startActivity(addIntent);
+                        startActivityForResult(addIntent, ADD_BOOK);
                         break;
                     default:
                         break;
@@ -298,14 +311,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (requestCode) {
 
             case VIEW_EDIT_BOOK:
+                if (resultCode == 2) {
+                    Bundle bundle = data.getBundleExtra("bundle");
+                    bookDataList.get(select_pos).setTitle(bundle.getString("Title"));
+                    bookDataList.get(select_pos).setAuthor(bundle.getString("Author"));
+                    bookDataList.get(select_pos).setISBN(bundle.getString("ISBN"));
+                    bookDataList.get(select_pos).setDescription(bundle.getString("Description"));
+                    bookDataList.get(select_pos).setHolder(bundle.getString("Holder"));
+                    bookAdapter.notifyDataSetChanged();
+                }
+                if (resultCode == 4) {
+                    bookDataList.remove(select_pos);
+                    bookAdapter.notifyDataSetChanged();
+                }
+                select_pos = -1;
                 break;
 
             case ADD_BOOK:
+                if (resultCode == 2) {
+                    Bundle bundle = data.getBundleExtra("bundle");
+                    BookBean newBook = new BookBean(bundle.getString("Title"));
+                    newBook.setAuthor(bundle.getString("Author"));
+                    newBook.setISBN(bundle.getString("ISBN"));
+                    newBook.setDescription(bundle.getString("Description"));
+                    newBook.setHolder(bundle.getString("Holder"));
+
+                    //Uri photoUri = Uri.parse(bundle.getString("PhotoUri"));
+                    //newBook.setPhotoUri(photoUri);
+
+                    bookDataList.add(newBook);
+                    bookAdapter.notifyDataSetChanged();
+                }
+                select_pos = -1;
                 break;
 
             default:
                 break;
         }
     }
+
+
+    /*
+    public static Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        int options = 90;
+        while (baos.toByteArray().length / 1024 > 50) {
+            baos.reset();
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
+            options -= 10;
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
+        return bitmap;
+    }
+     */
 
 }

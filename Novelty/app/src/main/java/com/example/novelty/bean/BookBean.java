@@ -1,5 +1,8 @@
 package com.example.novelty.bean;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,17 +14,49 @@ public class BookBean implements Serializable {
     String status;
     String owner;
     String borrower;
-    String photograph;
+    String holder;
+    Bitmap photo;
+    Uri photoUri;
     private ArrayList<RequestBean> requests;
 
     public BookBean(String title) {
         this.title = title;
+        this.author = null;
+        this.ISBN = null;
+        this.description = null;
+        this.owner = null;
+        this.borrower = null;
+        this.owner = null;
+        this.photo = null;
+        this.photoUri = null;
     }
 
     public BookBean(String title, String author, String description) {
         this.title = title;
         this.author = author;
         this.description = description;
+        this.ISBN = null;
+        this.owner = null;
+        this.borrower = null;
+        this.photo = null;
+        this.photoUri = null;
+    }
+
+
+    public String getHolder() {
+        return holder;
+    }
+
+    public void setHolder(String holder) {
+        this.holder = holder;
+    }
+
+    public Uri getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(Uri photoUri) {
+        this.photoUri = photoUri;
     }
 
     public String getTitle() {
@@ -56,8 +91,8 @@ public class BookBean implements Serializable {
         return requests;
     }
 
-    public String getPhotograph() {
-        return photograph;
+    public Bitmap getPhoto() {
+        return photo;
     }
 
     public void setTitle(String title) {
@@ -88,7 +123,7 @@ public class BookBean implements Serializable {
         this.borrower = borrower;
     }
 
-    public void setPhotograph(String photograph) {
-        this.photograph = photograph;
+    public void setPhoto(Bitmap photo) {
+        this.photo = photo;
     }
 }
