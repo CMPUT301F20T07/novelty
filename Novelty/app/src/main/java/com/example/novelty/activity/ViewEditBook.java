@@ -1,5 +1,6 @@
 package com.example.novelty.activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +22,9 @@ import android.widget.Toast;
 
 import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,10 +46,15 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
     private EditText editDescription;
     private Button deleteButton;
 
+    private FirebaseAuth fAuth;
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_edit_book);
+
+        fAuth = FirebaseAuth.getInstance();
 
         uploadPhotoButton = findViewById(R.id.btn_upload);
         deletePhotoButton = findViewById(R.id.btn_deletePhoto);
@@ -137,6 +147,8 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+
+        userID = fAuth.getCurrentUser().getUid();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,6 +158,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                 String title = editBookTitle.getText().toString();
                 String holder = editHolder.getText().toString();
                 String description = editDescription.getText().toString();
+                String status = spinner.getSelectedItem().toString();
 
                 if (ISBN.length() > 0 && author.length() > 0 && title.length() > 0) {
                     Map<String, Object> bookMap = new HashMap<>();
@@ -154,6 +167,78 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                     bookMap.put("Author", author);
                     bookMap.put("Holder", holder);
                     bookMap.put("Description", description);
+                    bookMap.put("Status", status);
+
+                    if (status.length() > 0) {
+                        switch (status) {
+                            case "Available":
+                                Database.userAvailRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            case "Requested":
+                                Database.userRequestRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            case "Accepted":
+                                Database.userAcceptedRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            case "Borrowed":
+                                Database.userBorrowedRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
 
                     Intent data = new Intent();
                     Bundle bundle = new Bundle();
@@ -162,7 +247,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                     bundle.putString("ISBN", ISBN);
                     bundle.putString("Description", description);
                     bundle.putString("Holder", holder);
-                    bundle.putString("Status", spinner.getSelectedItem().toString());
+                    bundle.putString("Status", status);
 
                     data.putExtra("bundle", bundle);
                     setResult(2,data);
@@ -172,6 +257,8 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
             }
         });
+
+
     }
 
 
