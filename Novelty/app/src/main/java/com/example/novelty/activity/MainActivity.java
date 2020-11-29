@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final int VIEW_EDIT_BOOK = 111;
     public static final int ADD_BOOK = 112;
+
+    private String userID;
 
     FloatingActionButton fab_scan, fab_lend, fab_return, fab_view, fab_confirm;
     Animation fabOpen, fabClose, fabRClockwise, fabRCounterClockwise;
@@ -67,9 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        HashMap<String, String> data = new HashMap<>();
-
 
         bookList = findViewById(R.id.mainscreen_list);
         bookDataList = new ArrayList<>();
@@ -350,6 +350,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     bookDataList.add(newBook);
                     bookAdapter.notifyDataSetChanged();
+
                 }
                 select_pos = -1;
                 break;

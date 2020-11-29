@@ -22,6 +22,8 @@ import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewEditBook extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
@@ -138,17 +140,36 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("Title", editBookTitle.getText().toString());
-                bundle.putString("Author", editAuthor.getText().toString());
-                bundle.putString("ISBN", editISBN.getText().toString());
-                bundle.putString("Description", editDescription.getText().toString());
-                bundle.putString("Holder", editHolder.getText().toString());
-                bundle.putString("Status", spinner.getSelectedItem().toString());
-                data.putExtra("bundle", bundle);
-                setResult(2,data);
-                finish();
+
+                String ISBN = editISBN.getText().toString();
+                String author = editAuthor.getText().toString();
+                String title = editBookTitle.getText().toString();
+                String holder = editHolder.getText().toString();
+                String description = editDescription.getText().toString();
+
+                if (ISBN.length() > 0 && author.length() > 0 && title.length() > 0) {
+                    Map<String, Object> bookMap = new HashMap<>();
+                    bookMap.put("ISBN", ISBN);
+                    bookMap.put("Title", title);
+                    bookMap.put("Author", author);
+                    bookMap.put("Holder", holder);
+                    bookMap.put("Description", description);
+
+                    Intent data = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Title", title);
+                    bundle.putString("Author", author);
+                    bundle.putString("ISBN", ISBN);
+                    bundle.putString("Description", description);
+                    bundle.putString("Holder", holder);
+                    bundle.putString("Status", spinner.getSelectedItem().toString());
+
+                    data.putExtra("bundle", bundle);
+                    setResult(2,data);
+
+                    finish();
+                }
+
             }
         });
     }

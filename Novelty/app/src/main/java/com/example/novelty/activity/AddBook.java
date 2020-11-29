@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.novelty.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.IOException;
@@ -37,7 +38,6 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
     Bitmap bitmap = null;
     Uri imageUri = null;
 
-    Map<String, Object> book = new HashMap<>();
 
     private Button uploadPhotoButton;
     private Button deletePhotoButton;
@@ -127,26 +127,35 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                 Database.getBookInfo(editISBN.getText().toString()).set(book);
                  */
 
-                book.put("ISBN", editISBN.getText().toString());
-                book.put("Title", editBookTitle.getText().toString());
-                book.put("Holder", editHolder.getText().toString());
-                book.put("Author", editAuthor.getText().toString());
-                book.put("Description", editDescription.getText().toString());
+                String ISBN = editISBN.getText().toString();
+                String author = editAuthor.getText().toString();
+                String title = editBookTitle.getText().toString();
+                String holder = editHolder.getText().toString();
+                String description = editDescription.getText().toString();
 
+                if (ISBN.length() > 0 && author.length() > 0 && title.length() > 0) {
+                    Map<String, Object> bookMap = new HashMap<>();
+                    bookMap.put("ISBN", ISBN);
+                    bookMap.put("Title", title);
+                    bookMap.put("Author", author);
+                    bookMap.put("Holder", holder);
+                    bookMap.put("Description", description);
 
-                Intent data = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("Title", editBookTitle.getText().toString());
-                bundle.putString("Author", editAuthor.getText().toString());
-                bundle.putString("ISBN", editISBN.getText().toString());
-                bundle.putString("Description", editDescription.getText().toString());
-                bundle.putString("Holder", editHolder.getText().toString());
-                bundle.putString("Status", spinner.getSelectedItem().toString());
+                    Intent data = new Intent();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Title", title);
+                    bundle.putString("Author", author);
+                    bundle.putString("ISBN", ISBN);
+                    bundle.putString("Description", description);
+                    bundle.putString("Holder", holder);
+                    bundle.putString("Status", spinner.getSelectedItem().toString());
 
-                data.putExtra("bundle", bundle);
-                setResult(2,data);
+                    data.putExtra("bundle", bundle);
+                    setResult(2,data);
 
-                finish();
+                    finish();
+                }
+
             }
         });
     }
