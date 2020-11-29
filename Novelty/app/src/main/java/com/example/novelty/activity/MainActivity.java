@@ -28,8 +28,10 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
@@ -59,11 +61,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private BottomAppBar bottomAppBar;
 
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HashMap<String, String> data = new HashMap<>();
+
 
         bookList = findViewById(R.id.mainscreen_list);
         bookDataList = new ArrayList<>();
@@ -322,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     bookDataList.get(select_pos).setISBN(bundle.getString("ISBN"));
                     bookDataList.get(select_pos).setDescription(bundle.getString("Description"));
                     bookDataList.get(select_pos).setHolder(bundle.getString("Holder"));
+                    bookDataList.get(select_pos).setStatus(bundle.getString("Status"));
                     bookAdapter.notifyDataSetChanged();
                 }
                 if (resultCode == 4) {
@@ -339,9 +346,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     newBook.setISBN(bundle.getString("ISBN"));
                     newBook.setDescription(bundle.getString("Description"));
                     newBook.setHolder(bundle.getString("Holder"));
-
-                    //Uri photoUri = Uri.parse(bundle.getString("PhotoUri"));
-                    //newBook.setPhotoUri(photoUri);
+                    newBook.setStatus(bundle.getString("Status"));
 
                     bookDataList.add(newBook);
                     bookAdapter.notifyDataSetChanged();

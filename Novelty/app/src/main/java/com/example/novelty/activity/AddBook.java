@@ -37,6 +37,8 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
     Bitmap bitmap = null;
     Uri imageUri = null;
 
+    Map<String, Object> book = new HashMap<>();
+
     private Button uploadPhotoButton;
     private Button deletePhotoButton;
     private ImageView photoView;
@@ -62,7 +64,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
         photoView = findViewById(R.id.photoView);
         cancelButton = findViewById(R.id.btn_cancel);
         saveButton = findViewById(R.id.btn_save);
-        Spinner spinner = findViewById(R.id.status_spinner1);
+        final Spinner spinner = findViewById(R.id.status_spinner1);
 
         deleteButton = findViewById(R.id.btn_delete);
 
@@ -110,7 +112,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
             }
         });
 
-        final Map<String,Object> book = new HashMap<>();
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +127,13 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                 Database.getBookInfo(editISBN.getText().toString()).set(book);
                  */
 
+                book.put("ISBN", editISBN.getText().toString());
+                book.put("Title", editBookTitle.getText().toString());
+                book.put("Holder", editHolder.getText().toString());
+                book.put("Author", editAuthor.getText().toString());
+                book.put("Description", editDescription.getText().toString());
+
+
                 Intent data = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putString("Title", editBookTitle.getText().toString());
@@ -132,6 +141,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                 bundle.putString("ISBN", editISBN.getText().toString());
                 bundle.putString("Description", editDescription.getText().toString());
                 bundle.putString("Holder", editHolder.getText().toString());
+                bundle.putString("Status", spinner.getSelectedItem().toString());
 
                 data.putExtra("bundle", bundle);
                 setResult(2,data);

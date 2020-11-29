@@ -57,7 +57,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
         editISBN = findViewById(R.id.editTextISBN);
         editDescription = findViewById(R.id.editTextTextMultiLine);
 
-        Spinner spinner = findViewById(R.id.status_spinner2);
+        final Spinner spinner = findViewById(R.id.status_spinner2);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.status, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,7 +67,9 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
         BookBean book = (BookBean) getIntent().getSerializableExtra("book");
 
-        editBookTitle.setText(book.getTitle());
+        if (book.getTitle() != null) {
+            editBookTitle.setText(book.getTitle());
+        }
 
         if (book.getAuthor() != null) {
             editAuthor.setText(book.getAuthor());
@@ -83,6 +85,20 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
         if (book.getISBN() != null) {
             editISBN.setText(book.getISBN());
+        }
+
+
+        if (book.getStatus() != null) {
+            for (int i = 0; i < adapter.getCount(); i++) {
+                if (book.getStatus().equals(adapter.getItem(i).toString())) {
+                    spinner.setSelection(i);
+                    break;
+                } else {
+                    spinner.setSelection(0);
+                }
+            }
+        } else {
+            spinner.setSelection(0);
         }
 
 
@@ -129,6 +145,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                 bundle.putString("ISBN", editISBN.getText().toString());
                 bundle.putString("Description", editDescription.getText().toString());
                 bundle.putString("Holder", editHolder.getText().toString());
+                bundle.putString("Status", spinner.getSelectedItem().toString());
                 data.putExtra("bundle", bundle);
                 setResult(2,data);
                 finish();

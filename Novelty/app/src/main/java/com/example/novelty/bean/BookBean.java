@@ -31,6 +31,7 @@ public class BookBean implements Serializable {
         this.owner = null;
         this.photo = null;
         this.photoUri = null;
+        this.status = null;
     }
 
     public BookBean(String title, String description, String status, String owner) {
@@ -43,6 +44,7 @@ public class BookBean implements Serializable {
         this.holder = null;
         this.photo = null;
         this.photoUri = null;
+        this.status = null;
     }
 
     public String getHolder() {
