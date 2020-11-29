@@ -28,6 +28,7 @@
         <activity android:name=".activity.AddBook" />
         <activity android:name=".activity.ViewEditBook" />
         <activity android:name=".activity.UploadPhoto" />
+
         <activity android:name=".activity.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.novelty.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.IOException;
@@ -37,7 +38,6 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
     Bitmap bitmap = null;
     Uri imageUri = null;
 
-    Map<String, Object> book = new HashMap<>();
 
     private Button uploadPhotoButton;
     private Button deletePhotoButton;
@@ -45,7 +45,6 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
     private Button cancelButton;
     private Button saveButton;
     private Button deleteButton;
-    private TextView status;
 
     private EditText editBookTitle;
     private EditText editAuthor;
@@ -53,11 +52,16 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
     private EditText editISBN;
     private EditText editDescription;
 
+    private FirebaseAuth fAuth;
+    private String userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_book);
+
+        fAuth = FirebaseAuth.getInstance();
 
         uploadPhotoButton = findViewById(R.id.btn_upload);
         deletePhotoButton = findViewById(R.id.btn_deletePhoto);
@@ -113,40 +117,101 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
         });
 
 
+        userID = fAuth.getCurrentUser().getUid();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                book.put("ISBN", editISBN.getText().toString());
-                book.put("book_name", editBookTitle.getText().toString());
-                book.put("holder", editHolder.getText().toString());
-                book.put("author", editAuthor.getText().toString());
-                book.put("description", editDescription.getText().toString());
 
+                String ISBN = editISBN.getText().toString();
+                String author = editAuthor.getText().toString();
+                String title = editBookTitle.getText().toString();
+                String holder = editHolder.getText().toString();
+                String description = editDescription.getText().toString();
+                String status = spinner.getSelectedItem().toString();
 
-                Database.getBookInfo(editISBN.getText().toString()).set(book);
-                 */
+                if (ISBN.length() > 0 && author.length() > 0 && title.length() > 0) {
+                    Map<String, Object> bookMap = new HashMap<>();
+                    bookMap.put("ISBN", ISBN);
+                    bookMap.put("Title", title);
+                    bookMap.put("Author", author);
+                    bookMap.put("Holder", holder);
+                    bookMap.put("Description", description);
+                    bookMap.put("Status", status);
 
-                book.put("ISBN", editISBN.getText().toString());
-                book.put("Title", editBookTitle.getText().toString());
-                book.put("Holder", editHolder.getText().toString());
-                book.put("Author", editAuthor.getText().toString());
-                book.put("Description", editDescription.getText().toString());
+                    if (status.length() > 0) {
+                        switch (status) {
+                            case "Available":
+                                Database.userAvailRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
 
+                            case "Requested":
+                                Database.userRequestRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
 
-                Intent data = new Intent();
-                Bundle bundle = new Bundle();
-                bundle.putString("Title", editBookTitle.getText().toString());
-                bundle.putString("Author", editAuthor.getText().toString());
-                bundle.putString("ISBN", editISBN.getText().toString());
-                bundle.putString("Description", editDescription.getText().toString());
-                bundle.putString("Holder", editHolder.getText().toString());
-                bundle.putString("Status", spinner.getSelectedItem().toString());
+                            case "Accepted":
+                                Database.userAcceptedRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
 
-                data.putExtra("bundle", bundle);
-                setResult(2,data);
+                            case "Borrowed":
+                                Database.userBorrowedRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
 
-                finish();
+                            default:
+                                break;
+                        }
+                    }
+
+                    finish();
+                }
+
             }
         });
     }
