@@ -209,18 +209,6 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                         }
                     }
 
-                    Intent data = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Title", title);
-                    bundle.putString("Author", author);
-                    bundle.putString("ISBN", ISBN);
-                    bundle.putString("Description", description);
-                    bundle.putString("Holder", holder);
-                    bundle.putString("Status", status);
-
-                    data.putExtra("bundle", bundle);
-                    setResult(2,data);
-
                     finish();
                 }
 

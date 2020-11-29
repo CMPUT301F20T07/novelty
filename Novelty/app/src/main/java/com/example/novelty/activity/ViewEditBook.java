@@ -49,6 +49,10 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
     private FirebaseAuth fAuth;
     private String userID;
 
+    private String ISBN;
+    private String status;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +82,9 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
 
         BookBean book = (BookBean) getIntent().getSerializableExtra("book");
+
+        status = book.getStatus();
+        ISBN = book.getISBN();
 
         if (book.getTitle() != null) {
             editBookTitle.setText(book.getTitle());
@@ -131,14 +138,83 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
             }
         });
 
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data = new Intent();
-                setResult(4, data);
+                switch (status) {
+                    case "Available":
+                        Database.userAvailRef(userID).document(ISBN).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Sample", "Data has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Sample", "Data could not be deleted!" + e.toString());
+                                    }
+                                });
+                        break;
+
+                    case "Requested":
+                        Database.userRequestRef(userID).document(ISBN).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Sample", "Data has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Sample", "Data could not be deleted!" + e.toString());
+                                    }
+                                });
+                        break;
+
+                    case "Accepted":
+                        Database.userAcceptedRef(userID).document(ISBN).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Sample", "Data has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Sample", "Data could not be deleted!" + e.toString());
+                                    }
+                                });
+                        break;
+
+                    case "Borrowed":
+                        Database.userBorrowedRef(userID).document(ISBN).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Sample", "Data has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Sample", "Data could not be deleted!" + e.toString());
+                                    }
+                                });
+                        break;
+
+                    default:
+                        break;
+                }
+
                 finish();
             }
         });
+
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,18 +315,6 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                 break;
                         }
                     }
-
-                    Intent data = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("Title", title);
-                    bundle.putString("Author", author);
-                    bundle.putString("ISBN", ISBN);
-                    bundle.putString("Description", description);
-                    bundle.putString("Holder", holder);
-                    bundle.putString("Status", status);
-
-                    data.putExtra("bundle", bundle);
-                    setResult(2,data);
 
                     finish();
                 }

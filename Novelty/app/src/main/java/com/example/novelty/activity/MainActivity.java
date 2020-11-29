@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -28,7 +29,12 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +45,10 @@ import static java.util.Objects.requireNonNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int VIEW_EDIT_BOOK = 111;
-    public static final int ADD_BOOK = 112;
+    //public static final int VIEW_EDIT_BOOK = 111;
+    //public static final int ADD_BOOK = 112;
 
+    FirebaseAuth fAuth;
     private String userID;
 
     FloatingActionButton fab_scan, fab_lend, fab_return, fab_view, fab_confirm;
@@ -50,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NestedListView bookList;
     ArrayList<BookBean> bookDataList;
     ArrayAdapter<BookBean> bookAdapter;
+
+    ArrayList<BookBean> dataList1;
+    ArrayList<BookBean> dataList2;
+    ArrayList<BookBean> dataList3;
+    ArrayList<BookBean> dataList4;
 
     int select_pos = -1;
 
@@ -71,58 +83,152 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fAuth = FirebaseAuth.getInstance();
+        userID = fAuth.getCurrentUser().getUid();
+
         bookList = findViewById(R.id.mainscreen_list);
         bookDataList = new ArrayList<>();
         bookAdapter = new CustomList_Book(this, bookDataList);
 
+        dataList1 = new ArrayList<>();
+        dataList2 = new ArrayList<>();
+        dataList3 = new ArrayList<>();
+        dataList4 = new ArrayList<>();
+
         bookList.setAdapter(bookAdapter);
         bookList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        //test==========================================
-        BookBean book1 = new BookBean("Book 1");
-        BookBean book2 = new BookBean("Book 2");
-        BookBean book3 = new BookBean("Book 3");
-        BookBean book4 = new BookBean("Book 4");
-        BookBean book5 = new BookBean("Book 5");
-        BookBean book6 = new BookBean("Book 6");
-        BookBean book7 = new BookBean("Book 7");
-        BookBean book8 = new BookBean("Book 8");
-        BookBean book9 = new BookBean("Book 9");
-        BookBean book10 = new BookBean("Book 10");
-        BookBean book11 = new BookBean("Book 11");
-        BookBean book12 = new BookBean("Book 12");
-        BookBean book13 = new BookBean("Book 13");
-        BookBean book14 = new BookBean("Book 14");
-        BookBean book15 = new BookBean("Book 15");
 
-        BookBean bookTest = new BookBean("Test View Edit");
-        bookTest.setAuthor("David");
-        bookTest.setOwner("Mario");
-        bookTest.setDescription("This is a Description `````````````````````````````````````````````");
+        Database.userAvailRef(userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                bookDataList.clear();
+                dataList1.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("Title");
+                    String ISBN = (String) doc.getData().get("ISBN");
+                    String author = (String) doc.getData().get("Author");
+                    String holder = (String) doc.getData().get("Holder");
+                    String description = (String) doc.getData().get("Description");
+                    String status = (String) doc.getData().get("Status");
 
-        bookDataList.add(book1);
-        bookDataList.add(book2);
-        bookDataList.add(book3);
-        bookDataList.add(book4);
-        bookDataList.add(book5);
+                    BookBean newBook = new BookBean(title);
+                    newBook.setISBN(ISBN);
+                    newBook.setAuthor(author);
+                    newBook.setHolder(holder);
+                    newBook.setDescription(description);
+                    newBook.setStatus(status);
 
-        bookDataList.add(bookTest);
+                    dataList1.add(newBook);
+                }
 
-        bookDataList.add(book6);
-        bookDataList.add(book7);
-        bookDataList.add(book8);
-        bookDataList.add(book9);
-        bookDataList.add(book10);
-        bookDataList.add(book11);
-        bookDataList.add(book12);
-        bookDataList.add(book13);
-        bookDataList.add(book14);
-        bookDataList.add(book15);
+                bookDataList.addAll(dataList1);
+                bookDataList.addAll(dataList2);
+                bookDataList.addAll(dataList3);
+                bookDataList.addAll(dataList4);
 
-        bookAdapter.notifyDataSetChanged();
+                bookAdapter.notifyDataSetChanged();
+            }
+        });
 
 
-        //test===============================================
+        Database.userRequestRef(userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                bookDataList.clear();
+                dataList2.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("Title");
+                    String ISBN = (String) doc.getData().get("ISBN");
+                    String author = (String) doc.getData().get("Author");
+                    String holder = (String) doc.getData().get("Holder");
+                    String description = (String) doc.getData().get("Description");
+                    String status = (String) doc.getData().get("Status");
+
+                    BookBean newBook = new BookBean(title);
+                    newBook.setISBN(ISBN);
+                    newBook.setAuthor(author);
+                    newBook.setHolder(holder);
+                    newBook.setDescription(description);
+                    newBook.setStatus(status);
+
+                    dataList2.add(newBook);
+                }
+
+                bookDataList.addAll(dataList1);
+                bookDataList.addAll(dataList2);
+                bookDataList.addAll(dataList3);
+                bookDataList.addAll(dataList4);
+
+                bookAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        Database.userAcceptedRef(userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                bookDataList.clear();
+                dataList3.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("Title");
+                    String ISBN = (String) doc.getData().get("ISBN");
+                    String author = (String) doc.getData().get("Author");
+                    String holder = (String) doc.getData().get("Holder");
+                    String description = (String) doc.getData().get("Description");
+                    String status = (String) doc.getData().get("Status");
+
+                    BookBean newBook = new BookBean(title);
+                    newBook.setISBN(ISBN);
+                    newBook.setAuthor(author);
+                    newBook.setHolder(holder);
+                    newBook.setDescription(description);
+                    newBook.setStatus(status);
+
+                    dataList3.add(newBook);
+                }
+
+                bookDataList.addAll(dataList1);
+                bookDataList.addAll(dataList2);
+                bookDataList.addAll(dataList3);
+                bookDataList.addAll(dataList4);
+
+                bookAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        Database.userBorrowedRef(userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                bookDataList.clear();
+                dataList4.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("Title");
+                    String ISBN = (String) doc.getData().get("ISBN");
+                    String author = (String) doc.getData().get("Author");
+                    String holder = (String) doc.getData().get("Holder");
+                    String description = (String) doc.getData().get("Description");
+                    String status = (String) doc.getData().get("Status");
+
+                    BookBean newBook = new BookBean(title);
+                    newBook.setISBN(ISBN);
+                    newBook.setAuthor(author);
+                    newBook.setHolder(holder);
+                    newBook.setDescription(description);
+                    newBook.setStatus(status);
+
+                    dataList4.add(newBook);
+                }
+
+                bookDataList.addAll(dataList1);
+                bookDataList.addAll(dataList2);
+                bookDataList.addAll(dataList3);
+                bookDataList.addAll(dataList4);
+
+                bookAdapter.notifyDataSetChanged();
+            }
+        });
 
 
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -134,7 +240,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 Intent viewEditIntent = new Intent(MainActivity.this, ViewEditBook.class);
                 viewEditIntent.putExtra("book", book);
-                startActivityForResult(viewEditIntent, VIEW_EDIT_BOOK);
+                startActivity(viewEditIntent);
+                select_pos = -1;
             }
         });
 
@@ -183,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (item.getItemId()) {
                     case R.id.menuAdd:
                         Intent addIntent = new Intent(MainActivity.this, AddBook.class);
-                        startActivityForResult(addIntent, ADD_BOOK);
+                        startActivity(addIntent);
                         break;
                     default:
                         break;
@@ -320,61 +427,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (requestCode) {
 
-            case VIEW_EDIT_BOOK:
-                if (resultCode == 2) {
-                    Bundle bundle = data.getBundleExtra("bundle");
-                    bookDataList.get(select_pos).setTitle(bundle.getString("Title"));
-                    bookDataList.get(select_pos).setAuthor(bundle.getString("Author"));
-                    bookDataList.get(select_pos).setISBN(bundle.getString("ISBN"));
-                    bookDataList.get(select_pos).setDescription(bundle.getString("Description"));
-                    bookDataList.get(select_pos).setHolder(bundle.getString("Holder"));
-                    bookDataList.get(select_pos).setStatus(bundle.getString("Status"));
-                    bookAdapter.notifyDataSetChanged();
-                }
-                if (resultCode == 4) {
-                    bookDataList.remove(select_pos);
-                    bookAdapter.notifyDataSetChanged();
-                }
-                select_pos = -1;
-                break;
-
-            case ADD_BOOK:
-                if (resultCode == 2) {
-                    Bundle bundle = data.getBundleExtra("bundle");
-                    BookBean newBook = new BookBean(bundle.getString("Title"));
-                    newBook.setAuthor(bundle.getString("Author"));
-                    newBook.setISBN(bundle.getString("ISBN"));
-                    newBook.setDescription(bundle.getString("Description"));
-                    newBook.setHolder(bundle.getString("Holder"));
-                    newBook.setStatus(bundle.getString("Status"));
-
-                    bookDataList.add(newBook);
-                    bookAdapter.notifyDataSetChanged();
-
-                }
-                select_pos = -1;
-                break;
-
             default:
                 break;
         }
     }
-
-
-    /*
-    public static Bitmap compressImage(Bitmap image) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        int options = 90;
-        while (baos.toByteArray().length / 1024 > 50) {
-            baos.reset();
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
-            options -= 10;
-        }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
-        return bitmap;
-    }
-     */
 
 }
