@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String holder = (String) doc.getData().get("Holder");
                     String description = (String) doc.getData().get("Description");
                     String status = (String) doc.getData().get("Status");
+                    String imageID = (String) doc.getData().get("imageID");
 
                     BookBean newBook = new BookBean(title);
                     newBook.setISBN(ISBN);
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     newBook.setHolder(holder);
                     newBook.setDescription(description);
                     newBook.setStatus(status);
+                    newBook.setImageID(imageID);
 
                     dataList1.add(newBook);
                 }
@@ -144,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String holder = (String) doc.getData().get("Holder");
                     String description = (String) doc.getData().get("Description");
                     String status = (String) doc.getData().get("Status");
+                    String imageID = (String) doc.getData().get("imageID");
 
                     BookBean newBook = new BookBean(title);
                     newBook.setISBN(ISBN);
@@ -151,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     newBook.setHolder(holder);
                     newBook.setDescription(description);
                     newBook.setStatus(status);
+                    newBook.setImageID(imageID);
 
                     dataList2.add(newBook);
                 }
@@ -177,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String holder = (String) doc.getData().get("Holder");
                     String description = (String) doc.getData().get("Description");
                     String status = (String) doc.getData().get("Status");
+                    String imageID = (String) doc.getData().get("imageID");
 
                     BookBean newBook = new BookBean(title);
                     newBook.setISBN(ISBN);
@@ -184,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     newBook.setHolder(holder);
                     newBook.setDescription(description);
                     newBook.setStatus(status);
+                    newBook.setImageID(imageID);
 
                     dataList3.add(newBook);
                 }
@@ -210,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String holder = (String) doc.getData().get("Holder");
                     String description = (String) doc.getData().get("Description");
                     String status = (String) doc.getData().get("Status");
+                    String imageID = (String) doc.getData().get("imageID");
 
                     BookBean newBook = new BookBean(title);
                     newBook.setISBN(ISBN);
@@ -217,6 +224,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     newBook.setHolder(holder);
                     newBook.setDescription(description);
                     newBook.setStatus(status);
+                    newBook.setImageID(imageID);
 
                     dataList4.add(newBook);
                 }

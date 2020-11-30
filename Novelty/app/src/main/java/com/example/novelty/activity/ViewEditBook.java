@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,7 +26,11 @@ import com.example.novelty.bean.BookBean;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +38,11 @@ import java.util.Map;
 public class ViewEditBook extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     public static final int UPLOAD_PHOTO = 100;
+
+    FirebaseStorage storage;
+
+    Bitmap bitmap = null;
+    Uri imageUri = null;
 
     private Button uploadPhotoButton;
     private Button deletePhotoButton;
@@ -51,6 +61,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
     private String ISBN;
     private String status;
+    private String imageID;
 
 
     @Override
@@ -59,6 +70,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_view_edit_book);
 
         fAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         uploadPhotoButton = findViewById(R.id.btn_upload);
         deletePhotoButton = findViewById(R.id.btn_deletePhoto);
@@ -123,6 +135,26 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
         photoView.setBackgroundColor(Color.LTGRAY);
 
+        imageID = book.getImageID();
+        if (imageID.length() > 0) {
+            StorageReference imageRef = storage.getReference().child(imageID);
+            imageRef.getBytes(1024*1024)
+                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            photoView.setImageBitmap(bitmap);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("Sample", "onFailure", e.getCause());
+                        }
+                    });
+        }
+
+
         uploadPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,6 +166,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
         deletePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bitmap = null;
                 photoView.setImageResource(0);
             }
         });
@@ -211,6 +244,12 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                         break;
                 }
 
+
+                if (imageID.length() > 0) {
+                    StorageReference imageRef = storage.getReference().child(imageID);
+                    imageRef.delete();
+                }
+
                 finish();
             }
         });
@@ -250,12 +289,46 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                         break;
                 }
 
+
+                if (imageID.length() > 0) {
+                    StorageReference imageRef = storage.getReference().child(imageID);
+                    imageRef.delete();
+                }
+
+
                 String ISBN = editISBN.getText().toString();
+                // make ISBN required
+                if (TextUtils.isEmpty(ISBN)){
+                    //display error message
+                    editISBN.setError("ISBN is required");
+                    return;
+                }
+
                 String author = editAuthor.getText().toString();
+                // make author required
+                if (TextUtils.isEmpty(author)){
+                    //display error message
+                    editAuthor.setError("author is required");
+                    return;
+                }
+
                 String title = editBookTitle.getText().toString();
+                // make title required
+                if (TextUtils.isEmpty(title)){
+                    //display error message
+                    editBookTitle.setError("author is required");
+                    return;
+                }
+
                 String holder = editHolder.getText().toString();
                 String description = editDescription.getText().toString();
                 String status = spinner.getSelectedItem().toString();
+
+                String imageID = "";
+                if (bitmap != null) {
+                    imageID = handleUpload(bitmap);
+                }
+
 
                 if (ISBN.length() > 0 && author.length() > 0 && title.length() > 0) {
                     Map<String, Object> bookMap = new HashMap<>();
@@ -265,6 +338,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                     bookMap.put("Holder", holder);
                     bookMap.put("Description", description);
                     bookMap.put("Status", status);
+                    bookMap.put("imageID", imageID);
 
                     if (status.length() > 0) {
                         switch (status) {
@@ -357,7 +431,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                 if (resultCode == 2) {
                     Uri imageUri = Uri.parse(data.getStringExtra("returnPhoto"));
                     try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+                        bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         photoView.setImageBitmap(bitmap);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -380,5 +454,33 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+    private String handleUpload(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+
+        String bookID = userID + "-" + editISBN.getText().toString();
+        String imgID = bookID + ".jpeg";
+        StorageReference reference = storage.getReference()
+                .child(imgID);
+
+        reference.putBytes(baos.toByteArray())
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(ViewEditBook.this,"Success", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Sample", "onFailure", e.getCause());
+                    }
+                });
+
+        return imgID;
+    }
+
 }
 
