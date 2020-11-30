@@ -22,6 +22,7 @@ import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
 import com.example.novelty.adapter.BookAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -133,12 +134,16 @@ public class SearchBookActivity extends AppCompatActivity {
         dialog.getWindow().setContentView(v);
         dialog.getWindow().setGravity(Gravity.CENTER);
         btn_sure.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                Database.userRequestRef(uid).document(uid).set(bookBean);
+                Database.userRequestRef(uid).document(uid).set(bookBean).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(SearchBookActivity.this, "add success", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
