@@ -11,7 +11,7 @@ public class BookBean implements Serializable {
     String author;
     String ISBN;
     String description;
-    String status;
+    String status ="request";
     String owner;
     String borrower;
     String holder;

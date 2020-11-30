@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,8 +21,11 @@ import com.example.novelty.adapter.UserAdapter;
 import com.example.novelty.bean.BookBean;
 import com.example.novelty.bean.RequestBean;
 import com.example.novelty.bean.UserBean;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -29,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MyAcceptActivity extends AppCompatActivity {
     ListView listView;
@@ -36,6 +41,7 @@ public class MyAcceptActivity extends AppCompatActivity {
     List<UserBean> userBeans = new ArrayList<>();
     CollectionReference requestRef;
     RequetsBookAdapter requetsBookAdapter;
+    private FirebaseAuth fAuth; //provided by firebase used to register the user.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,7 @@ public class MyAcceptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         listView = findViewById(R.id.listRequest);
-        requetsBookAdapter =new RequetsBookAdapter(mBook, this);
+        requetsBookAdapter = new RequetsBookAdapter(mBook, this);
         listView.setAdapter(requetsBookAdapter);
 
 
@@ -57,9 +63,23 @@ public class MyAcceptActivity extends AppCompatActivity {
                     String description = (String) documentSnapshot.get("description");
                     String status = (String) documentSnapshot.get("status");
                     String title = (String) documentSnapshot.get("title");
-                    mBook.add(new BookBean(title, status, Owner, description));
+                    mBook.add(new BookBean(title, description, "request", Owner));
                 }
                 requetsBookAdapter.notifyDataSetChanged();
+            }
+        });
+
+        fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
+        String userID = fAuth.getCurrentUser().getUid();
+
+        Database.getUserRef(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot result = task.getResult();
+                Map<String, Object> data = result.getData();
+                String username = (String) data.get("username");
+                String phone = (String) data.get("phone");
+                userBeans.add(new UserBean(username, phone));
             }
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

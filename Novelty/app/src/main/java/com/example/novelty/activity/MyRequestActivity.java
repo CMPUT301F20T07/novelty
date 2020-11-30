@@ -46,7 +46,7 @@ public class MyRequestActivity extends AppCompatActivity {
                     String description = (String) documentSnapshot.get("description");
                     String status = (String) documentSnapshot.get("status");
                     String title = (String) documentSnapshot.get("title");
-                    mRequest.add(new RequestBean(title, status, Owner, description));
+                    mRequest.add(new RequestBean(title, "request", Owner, description));
                 }
                 requetsAdapter.notifyDataSetChanged();
             }

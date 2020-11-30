@@ -7,6 +7,9 @@ import androidx.appcompat.widget.SearchView;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -79,7 +82,7 @@ public class SearchBookActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot result = task.getResult();
                             Map<String, Object> data = result.getData();
-                            mBookList.add(new BookBean(data.get("book_name").toString(), data.get("author").toString(), data.get("description").toString(), "request"));
+                            mBookList.add(new BookBean(data.get("book_name").toString(), data.get("description").toString(), "request", data.get("author").toString()));
                         }
                     });
                 }
@@ -144,6 +147,14 @@ public class SearchBookActivity extends AppCompatActivity {
                         Toast.makeText(SearchBookActivity.this, "add success", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+                Notification notification = new Notification.Builder(SearchBookActivity.this)
+                          .setContentTitle("message")
+                          .setContentText("request send")
+                          .setSmallIcon(R.mipmap.ic_launcher)
+                          .build();
+                NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.notify(1, notification);
             }
         });
 

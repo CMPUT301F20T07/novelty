@@ -1,5 +1,6 @@
 package com.example.novelty.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -10,16 +11,22 @@ import android.widget.TextView;
 
 import com.example.novelty.R;
 import com.example.novelty.bean.UserBean;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SearchUserActivity extends AppCompatActivity {
     private SearchView mSearchView;
     private ListView mListView;
     private TextView username;
-    private TextView phone,tv_username,tv_phone;
+    private TextView phone, tv_username, tv_phone;
     List<UserBean> list = new ArrayList<>();
+    private FirebaseAuth fAuth; //provided by firebase used to register the user.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +38,25 @@ public class SearchUserActivity extends AppCompatActivity {
         tv_phone = findViewById(R.id.tv_phone);
         tv_username = findViewById(R.id.tv_username);
 
-        list.add(new UserBean("sam","110"));
-        list.add(new UserBean("jay","130"));
-        list.add(new UserBean("user11","5062222"));
-        list.add(new UserBean("user222","44444"));
-        list.add(new UserBean("user230","5555"));
-        list.add(new UserBean("user240","666666"));
+//        list.add(new UserBean("sam", "110"));
+//        list.add(new UserBean("jay", "130"));
+//        list.add(new UserBean("user11", "5062222"));
+//        list.add(new UserBean("user222", "44444"));
+//        list.add(new UserBean("user230", "5555"));
+//        list.add(new UserBean("user240", "666666"));
+        fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
+        String userID = fAuth.getCurrentUser().getUid();
+
+        Database.getUserRef(userID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot result = task.getResult();
+                Map<String, Object> data = result.getData();
+                String username = (String) data.get("username");
+                String phone = (String) data.get("phone");
+                list.add(new UserBean(username, phone));
+            }
+        });
         mSearchView.onActionViewExpanded();
         mSearchView.setIconifiedByDefault(false);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

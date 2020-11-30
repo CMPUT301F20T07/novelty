@@ -55,7 +55,7 @@ public class RequetsBookAdapter extends BaseAdapter {
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        holder.tv_author.setText("status:" + list.get(position).getStatus());
+        holder.tv_author.setText("status:" + "request");
         holder.tv_title.setText("bookName:" + list.get(position).getTitle());
         holder.tv_description.setText("owner:" + list.get(position).getOwner());
         holder.tv_owner.setText("description:" + list.get(position).getDescription());

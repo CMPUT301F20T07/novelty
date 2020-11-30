@@ -62,7 +62,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        holder.tv_author.setText("status:" + list.get(position).getStatus());
+        holder.tv_author.setText("status:" + "request");
         holder.tv_title.setText("bookName:" + list.get(position).getTitle());
         holder.tv_description.setText("description:" + list.get(position).getDescription());
         holder.tv_owner.setText("Owner:" + list.get(position).getAuthor());

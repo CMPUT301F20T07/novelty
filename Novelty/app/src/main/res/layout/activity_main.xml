@@ -30,104 +30,10 @@
                 android:orientation="vertical"
                 >
 
-                <TextView
+                <com.example.novelty.adapter.NestedListView
+                    android:id="@+id/mainscreen_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:text="Crime and Punishment"
-                    android:textSize="18sp"
-                    android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="The Gambler">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Howls Moving Castle">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="Little Red Ridinghood">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="book name 5">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="book name 6">
-
-                </TextView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="book name 7">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="book name 8">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:text="book name 9"
-                    android:textSize="18sp"
-                    android:textStyle="bold">
-
-                </TextView>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="30dp"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:text="book name 10">
-
-                </TextView>
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
