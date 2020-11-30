@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<BookBean> dataList2;
     ArrayList<BookBean> dataList3;
     ArrayList<BookBean> dataList4;
+    ArrayList<BookBean> dataList5;
+    ArrayList<BookBean> dataList6;
 
     int select_pos = -1;
 
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dataList2 = new ArrayList<>();
         dataList3 = new ArrayList<>();
         dataList4 = new ArrayList<>();
+        dataList5 = new ArrayList<>();
+        dataList6 = new ArrayList<>();
 
         bookList.setAdapter(bookAdapter);
         bookList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -126,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bookDataList.addAll(dataList2);
                 bookDataList.addAll(dataList3);
                 bookDataList.addAll(dataList4);
+                bookDataList.addAll(dataList5);
+                bookDataList.addAll(dataList6);
 
                 bookAdapter.notifyDataSetChanged();
             }
@@ -159,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bookDataList.addAll(dataList2);
                 bookDataList.addAll(dataList3);
                 bookDataList.addAll(dataList4);
+                bookDataList.addAll(dataList5);
+                bookDataList.addAll(dataList6);
 
                 bookAdapter.notifyDataSetChanged();
             }
@@ -192,6 +200,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bookDataList.addAll(dataList2);
                 bookDataList.addAll(dataList3);
                 bookDataList.addAll(dataList4);
+                bookDataList.addAll(dataList5);
+                bookDataList.addAll(dataList6);
 
                 bookAdapter.notifyDataSetChanged();
             }
@@ -225,10 +235,80 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bookDataList.addAll(dataList2);
                 bookDataList.addAll(dataList3);
                 bookDataList.addAll(dataList4);
+                bookDataList.addAll(dataList5);
+                bookDataList.addAll(dataList6);
+                bookAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Database.userReceivedRequestRef(userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                bookDataList.clear();
+                dataList5.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("Title");
+                    String ISBN = (String) doc.getData().get("ISBN");
+                    String author = (String) doc.getData().get("Author");
+                    String holder = (String) doc.getData().get("Holder");
+                    String description = (String) doc.getData().get("Description");
+                    String status = (String) doc.getData().get("Status");
+
+                    BookBean newBook = new BookBean(title);
+                    newBook.setISBN(ISBN);
+                    newBook.setAuthor(author);
+                    newBook.setHolder(holder);
+                    newBook.setDescription(description);
+                    newBook.setStatus(status);
+
+                    dataList5.add(newBook);
+                }
+
+                bookDataList.addAll(dataList1);
+                bookDataList.addAll(dataList2);
+                bookDataList.addAll(dataList3);
+                bookDataList.addAll(dataList4);
+                bookDataList.addAll(dataList5);
+                bookDataList.addAll(dataList6);
+                bookAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Database.userRequestAcceptedRef(userID).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                bookDataList.clear();
+                dataList6.clear();
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    String title = (String) doc.getData().get("Title");
+                    String ISBN = (String) doc.getData().get("ISBN");
+                    String author = (String) doc.getData().get("Author");
+                    String holder = (String) doc.getData().get("Holder");
+                    String description = (String) doc.getData().get("Description");
+                    String status = (String) doc.getData().get("Status");
+
+                    BookBean newBook = new BookBean(title);
+                    newBook.setISBN(ISBN);
+                    newBook.setAuthor(author);
+                    newBook.setHolder(holder);
+                    newBook.setDescription(description);
+                    newBook.setStatus(status);
+
+                    dataList6.add(newBook);
+                }
+
+                bookDataList.addAll(dataList1);
+                bookDataList.addAll(dataList2);
+                bookDataList.addAll(dataList3);
+                bookDataList.addAll(dataList4);
+                bookDataList.addAll(dataList5);
+                bookDataList.addAll(dataList6);
 
                 bookAdapter.notifyDataSetChanged();
             }
         });
+
+
 
 
         bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

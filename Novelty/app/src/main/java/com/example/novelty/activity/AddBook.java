@@ -162,7 +162,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
 
                     if (status.length() > 0) {
                         switch (status) {
-                            case "Available":
+                            case "available":
                                 Database.userAvailRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -178,7 +178,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                                         });
                                 break;
 
-                            case "Requested":
+                            case "my requests":
                                 Database.userRequestRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -194,7 +194,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                                         });
                                 break;
 
-                            case "Accepted":
+                            case "accepted requests":
                                 Database.userAcceptedRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -210,8 +210,40 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                                         });
                                 break;
 
-                            case "Borrowed":
+                            case "borrowed":
                                 Database.userBorrowedRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            case "received requests":
+                                Database.userReceivedRequestRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            case "my accepted requests":
+                                Database.userRequestAcceptedRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {

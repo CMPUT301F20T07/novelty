@@ -18,10 +18,12 @@
     <string name="nav_header_title">username</string>
 
     <string-array name="status">
-        <item>Available</item>
-        <item>Requested</item>
-        <item>Accepted</item>
-        <item>Borrowed</item>
+        <item>available</item>
+        <item>my requests</item>
+        <item>accepted requests</item>
+        <item>borrowed</item>
+        <item>received requests</item>
+        <item>my accepted requests</item>
     </string-array>
 
 </resources>

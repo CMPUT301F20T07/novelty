@@ -143,7 +143,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
                 switch (status) {
-                    case "Available":
+                    case "available":
                         Database.userAvailRef(userID).document(ISBN).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -159,7 +159,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                 });
                         break;
 
-                    case "Requested":
+                    case "my requests":
                         Database.userRequestRef(userID).document(ISBN).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -175,7 +175,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                 });
                         break;
 
-                    case "Accepted":
+                    case "accepted requests":
                         Database.userAcceptedRef(userID).document(ISBN).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -191,8 +191,40 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                 });
                         break;
 
-                    case "Borrowed":
+                    case "borrowed":
                         Database.userBorrowedRef(userID).document(ISBN).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Sample", "Data has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Sample", "Data could not be deleted!" + e.toString());
+                                    }
+                                });
+                        break;
+
+                    case "received requests":
+                        Database.userReceivedRequestRef(userID).document(ISBN).delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Sample", "Data has been deleted successfully!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("Sample", "Data could not be deleted!" + e.toString());
+                                    }
+                                });
+                        break;
+
+                    case "my accepted requests":
+                        Database.userRequestAcceptedRef(userID).document(ISBN).delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -247,7 +279,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
 
                     if (status.length() > 0) {
                         switch (status) {
-                            case "Available":
+                            case "available":
                                 Database.userAvailRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -263,7 +295,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                         });
                                 break;
 
-                            case "Requested":
+                            case "my requests":
                                 Database.userRequestRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -279,7 +311,7 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                         });
                                 break;
 
-                            case "Accepted":
+                            case "accepted requests":
                                 Database.userAcceptedRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -295,8 +327,39 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
                                         });
                                 break;
 
-                            case "Borrowed":
+                            case "borrowed":
                                 Database.userBorrowedRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+
+                            case "received requests":
+                                Database.userReceivedRequestRef(userID).document(ISBN).set(bookMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Sample", "Data has been added successfully!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("Sample", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+                                break;
+                            case "my accepted requests":
+                                Database.userRequestAcceptedRef(userID).document(ISBN).set(bookMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
