@@ -6,19 +6,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.novelty.R;
+import com.example.novelty.bean.BookBean;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,34 +85,34 @@ public class contact_info extends AppCompatActivity {
         user.updateEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                DocumentReference docref = Database.getUserRef(userID);
+                final DocumentReference docref = Database.getUserRef(userID);
 
-                Map<String,Object> updated = new HashMap<>();
+                final Map<String,Object> updated = new HashMap<>();
                 updated.put("email", email);
                 updated.put("username",username);
                 updated.put("phone",phone);
 
 
                 // make username unique through Query
-//                Database.getusers()
-//                        .whereEqualTo("username", username)
-//                        .get()
-//                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        Toast.makeText(contact_info.this, "taken", Toast.LENGTH_SHORT).show();
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(contact_info.this, "updated", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-
-                docref.update(updated);
-                Toast.makeText(contact_info.this, "updated", Toast.LENGTH_SHORT).show();
-                finish();
+                Database.getusers()
+                        .whereEqualTo("username", username)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            // task is a list of documents
+                            if (task.getResult().size() == 0){
+                                docref.update(updated);
+                                Toast.makeText(contact_info.this, "updated", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }else{
+                                myUsername.setError("username already exists");
+                                Toast.makeText(contact_info.this, "Error", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
             }
         }).addOnFailureListener(new OnFailureListener() {

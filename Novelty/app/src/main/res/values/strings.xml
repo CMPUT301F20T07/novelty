@@ -17,7 +17,7 @@
     <string name="close">Close navigation drawer</string>
     <string name="nav_header_title">username</string>
     <string name="update_contact_btn">UPDATE</string>
-    <string name="userprofile_text">useprofile</string>
+    <string name="userprofile_text">user profile</string>
 
     <string-array name="status">
         <item>Available</item>

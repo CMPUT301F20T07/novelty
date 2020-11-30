@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/profile"
-        android:layout_width="157dp"
-        android:layout_height="62dp"
+        android:layout_width="194dp"
+        android:layout_height="59dp"
         android:fontFamily="@font/calligraffitti"
         android:text="@string/userprofile_text"
         android:textColor="#253280"
