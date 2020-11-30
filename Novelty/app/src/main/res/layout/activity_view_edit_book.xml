@@ -18,6 +18,7 @@
         android:gravity="start|top"
         android:autofillHints="Enter Description"
         android:inputType="textMultiLine"
+        android:hint="Enter Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

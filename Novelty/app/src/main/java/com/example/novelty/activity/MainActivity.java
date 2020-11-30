@@ -27,6 +27,8 @@ import com.example.novelty.R;
 import com.example.novelty.adapter.CustomList_Book;
 import com.example.novelty.adapter.NestedListView;
 import com.example.novelty.bean.BookBean;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -449,7 +452,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(intentResult.getContents() != null){
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle("ISBN and Description");
-            builder.setMessage(intentResult.getContents());
+            String description = getDescription(intentResult.getContents());
+            builder.setMessage(intentResult.getContents() + description);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i) {
@@ -470,6 +474,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 break;
         }
+    }
+
+
+    private String getDescription(String ISBN) {
+        String description = null;
+        for (int i = 0; i < bookDataList.size(); i++) {
+            if (ISBN.equals(bookDataList.get(i).getISBN())) {
+                description = "\n\n Description: \n" + bookDataList.get(i).getDescription();
+                return description;
+            }
+        }
+        description = "\n\n The book doesn't exist !";
+        return description;
     }
 
 }
