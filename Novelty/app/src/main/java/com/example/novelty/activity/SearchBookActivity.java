@@ -73,7 +73,7 @@ public class SearchBookActivity extends AppCompatActivity {
         });
         mListView.setAdapter(adapter);
 
-        userInfo = Database.getUserRef();
+        userInfo = Database.getusers();
         userInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
             //        Database.userAvailRef(uid).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -115,7 +115,6 @@ public class SearchBookActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-
 
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

@@ -419,9 +419,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
                 logout(findViewById(R.id.nav_log_out));
                 break;
-
             case R.id.nav_contact_info:
-                Toast.makeText(MainActivity.this, "Contact information", Toast.LENGTH_SHORT).show();
+                mIntent.setClass(MainActivity.this, contact_info.class);
+                startActivity(mIntent);
                 break;
             case R.id.nav_search_book:
                 mIntent.setClass(MainActivity.this, SearchBookActivity.class);

@@ -14,11 +14,10 @@ public class Database {
 //    public static StorageReference storageRef = storage.getReference();
 
     /**
-     * gets user
-     *
-     * @return  user
+     * gets reference for users collection
+     * @return document reference for the user
      */
-    public static CollectionReference getUserRef() {
+    public static CollectionReference getusers() {
         return Database.db.collection("users");
     }
 

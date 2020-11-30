@@ -1,8 +1,5 @@
 package com.example.novelty.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.novelty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,7 +23,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,11 +54,6 @@ public class Register extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
         progressBar = findViewById(R.id.progressBar);
 
-        //returning user that is already logged in
-        if (fAuth.getCurrentUser() != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }
 
         //click the register button
         myRegisterBtn.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +106,7 @@ public class Register extends AppCompatActivity {
                             user.put("email",email);
                             user.put("phone",phone);
 
-                           userDoc.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            userDoc.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "onSuccess: userProfile is created for "+ userID);

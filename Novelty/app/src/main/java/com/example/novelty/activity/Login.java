@@ -1,9 +1,5 @@
 package com.example.novelty.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +10,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.novelty.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -48,6 +48,12 @@ public class Login extends AppCompatActivity{
 
         fAuth = FirebaseAuth.getInstance(); // gets current instance of database from firebase to perform operations
         progressBar = findViewById(R.id.progressBar);
+
+        //returning user that is already logged in
+        if (fAuth.getCurrentUser() != null){
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
 
         //click the Login button
         //validate the users input
@@ -98,16 +104,6 @@ public class Login extends AppCompatActivity{
             }
         });
 
-        //if users don't have an account, take them to Register activity
-        myRegLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //send user to Register activity
-                Intent intent = new Intent(Login.this, Register.class);
-                startActivity(intent);
-            }
-        });
-
         //if users forget their password, take them to reset password activity
         forgotPassLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +147,17 @@ public class Login extends AppCompatActivity{
 
             }
         });
+
+        //if users don't have an account, take them to Register activity
+        myRegLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //send user to Register activity
+                Intent intent = new Intent(Login.this, Register.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 }
