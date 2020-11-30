@@ -3,14 +3,21 @@ package com.example.novelty.activity;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import java.util.HashMap;
 
 public class Database {
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
-     * gets reference for the specific  user
-     *
+     * gets reference for users collection
+     * @return document reference for the user
+     */
+    public static CollectionReference getusers() {
+        return Database.db.collection("users");
+    }
+
+    /**
+     * gets reference for specific user
      * @param userID unique userID for user from firebase auth.
      * @return document reference for the user
      */
@@ -19,20 +26,18 @@ public class Database {
                 .document(userID);
     }
 
-    /**
-     * gets reference for the "user" Collection
-     *
-     * @return document reference for the user
-     */
-    public static CollectionReference getusers() {
-        return Database.db.collection("users");
+    public static DocumentReference getBookInfo(String ISBN) {
+        return Database.db.collection("books")
+                .document(ISBN);
+    }
+    public static void addBookInfo(HashMap book, String ISBN) {
+        Database.db.collection("books").document(ISBN).set(book);
     }
 
     /**
-     * gets a specific book's reference
-     *
+     * gets a book's reference
      * @param collec collection reference for the books
-     * @param ISBN   unique ISBN of the book to access document
+     * @param ISBN unique ISBN of the book to access document
      * @return document reference for the specified book
      */
     public static DocumentReference getBookRef(CollectionReference collec, String ISBN) {
@@ -40,8 +45,7 @@ public class Database {
     }
 
     /**
-     * available books
-     *
+     * The books that I have available
      * @param userID string unique userID from firebase auth.
      * @return collection reference to the "available"
      */
@@ -51,8 +55,7 @@ public class Database {
     }
 
     /**
-     * borrowed books
-     *
+     * The books that I'm borrowed
      * @param userID string unique userID from firebase auth.
      * @return collection reference to the "borrowed"
      */
@@ -62,24 +65,43 @@ public class Database {
     }
 
     /**
-     * book requests
-     *
+     * as an owner, the requests that I received
+     * @param userID string unique userID from firebase auth.
+     * @return collection reference to the "received requests"
+     */
+    public static CollectionReference userReceivedRequestRef(String userID) {
+        return Database.db.collection("users")
+                .document(userID).collection("received requests");
+    }
+
+    /**
+     * as a borrower, the requests that I made
      * @param userID string unique userID from firebase auth.
      * @return collection reference to the "my requets"
      */
     public static CollectionReference userRequestRef(String userID) {
         return Database.db.collection("users")
-                .document(userID).collection("requested");
+                .document(userID).collection("my requests");
     }
 
     /**
-     * accepted books
-     *
+     * as an owner, the requests that I accepted
      * @param userID string unique userID from firebase auth.
      * @return collection reference to the "accepted requests"
      */
     public static CollectionReference userAcceptedRef(String userID) {
         return Database.db.collection("users")
-                .document(userID).collection("accepted");
+                .document(userID).collection("accepted requests");
     }
+
+    /**
+     * as a borrower, my requests that got accepted
+     * @param userID string unique userID from firebase auth.
+     * @return collection reference to "my accepted requests"
+     */
+    public static CollectionReference userRequestAcceptedRef(String userID) {
+        return Database.db.collection("users")
+                .document(userID).collection("my accepted requests");
+    }
+
 }

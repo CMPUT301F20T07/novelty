@@ -15,13 +15,6 @@
         android:layout_height="129dp"
         android:src="@drawable/ic_reading" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/nav_header_title"
-        android:textColor="#F2F4F6"
-        android:textSize="24sp" />
 
 
 </LinearLayout>
