@@ -2,6 +2,7 @@ package com.example.novelty.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -32,6 +33,14 @@ public class RequestDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
+//        findViewById(R.id.rule).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(RequestDetailsActivity.this, MapActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
     }
 
 }

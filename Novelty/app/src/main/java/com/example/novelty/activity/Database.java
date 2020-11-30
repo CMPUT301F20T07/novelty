@@ -1,8 +1,20 @@
 package com.example.novelty.activity;
 
+import android.nfc.Tag;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 //import com.google.firebase.storage.FirebaseStorage;
 //import com.google.firebase.storage.StorageReference;
 
@@ -19,6 +31,14 @@ public class Database {
     public static DocumentReference getUserRef(String userID) {
         return Database.db.collection("users")
                 .document(userID);
+    }
+
+    public static DocumentReference getBookInfo(String ISBN) {
+        return Database.db.collection("books")
+                .document(ISBN);
+    }
+    public static void addBookInfo(HashMap book, String ISBN) {
+        Database.db.collection("books").document(ISBN).set(book);
     }
 
     /**
@@ -58,7 +78,7 @@ public class Database {
      */
     public static CollectionReference userReceivedRequestRef(String userID) {
         return Database.db.collection("users")
-                .document(userID).collection("received requests");
+                .document(userID).collection("requested");
     }
 
     /**
@@ -78,7 +98,7 @@ public class Database {
      */
     public static CollectionReference userAcceptedRef(String userID) {
         return Database.db.collection("users")
-                .document(userID).collection("accepted requests");
+                .document(userID).collection("accepted");
     }
 
     /**
@@ -90,4 +110,5 @@ public class Database {
         return Database.db.collection("users")
                 .document(userID).collection("my accepted requests");
     }
+
 }

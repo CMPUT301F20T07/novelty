@@ -1,13 +1,15 @@
 package com.example.novelty.bean;
 
+import java.util.List;
+
 public class RequestBean {
     private BookBean book;
     private String status;
-    private UserBean from;
+    private List<UserBean> from;
     private UserBean ower;
     private GeoLocation location;
 
-    public RequestBean(String status, UserBean from) {
+    public RequestBean(String status, List<UserBean> from) {
         this.status = status;
         this.from = from;
     }
@@ -20,12 +22,16 @@ public class RequestBean {
         return status;
     }
 
-    public UserBean getFrom() {
-        return from;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public void setFrom(UserBean from) {
+    public void setFrom(List<UserBean> from) {
         this.from = from;
+    }
+
+    public List<UserBean> getFrom() {
+        return from;
     }
 
     public UserBean getOwer() {

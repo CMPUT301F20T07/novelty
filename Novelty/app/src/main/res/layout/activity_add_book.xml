@@ -55,7 +55,7 @@
         android:layout_marginStart="34dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/editBookTitle"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -81,7 +81,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_upload" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/editBookTitle"
         android:layout_width="288dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
@@ -147,7 +147,7 @@
         android:text="Author"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/editBookTitle" />
 
     <TextView
         android:id="@+id/textViewHolder"
@@ -172,7 +172,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextHolder" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/status_spinner1"
         android:layout_width="144dp"
         android:layout_height="30dp"
         android:layout_marginTop="29dp"

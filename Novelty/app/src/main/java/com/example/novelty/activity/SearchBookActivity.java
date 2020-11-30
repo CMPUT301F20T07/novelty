@@ -2,9 +2,14 @@ package com.example.novelty.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.app.NotificationCompat;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,11 +41,11 @@ public class SearchBookActivity extends AppCompatActivity {
         searchView.onActionViewExpanded();
         searchView.setIconifiedByDefault(false);
         mListView = findViewById(R.id.listBook);
-        mBookList.add(new BookBean("cinder","hexingjie","this is "));
-        mBookList.add(new BookBean("cinder1","hexingjie1","this is2 "));
-        mBookList.add(new BookBean("cinder2","hexingjie4","this is3 "));
-        mBookList.add(new BookBean("cinder3","hexingjie5","this is36"));
-        mBookList.add(new BookBean("cinder4","hexingjie7","this is7 "));
+        mBookList.add(new BookBean("To Kill a Mockingbird", "when I resent the size of my unbounded set, I want more numbers than I’m likely to get, and God", "request", "John Green"));
+        mBookList.add(new BookBean("The Silent Patient", "There are infinite numbers between 0 and 1,You gave me a forever within the numbered days", "request ", "John Green"));
+        mBookList.add(new BookBean("Tuesdays with Morrie", "It was Tuesday", "request", "Mitch Albom"));
+        mBookList.add(new BookBean("Sweetbitter", "Bitter, always a bit anticipated.The mouth still hesitates at each new encounter.We urge it forward, say, Adapt. Now, enjoy it.", "this is36", "Stephanie Danler"));
+        mBookList.add(new BookBean("Lord of the flies", "Funerals are not for the dead,they are for the living.", "request", "William Golding"));
 
 
         adapter = new BookAdapter(mBookList, this, new BookAdapter.FilterListener() {
@@ -54,6 +59,13 @@ public class SearchBookActivity extends AppCompatActivity {
 
         mListView.setAdapter(adapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                dialogShow(mBookList.get(i));
+
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -90,20 +102,28 @@ public class SearchBookActivity extends AppCompatActivity {
         TextView tv_owner = (TextView) v.findViewById(R.id.tv_owner);
         TextView tv_book_title = (TextView) v.findViewById(R.id.tv_book_title);
 
-
         tv_book_title.setText(bookBean.getTitle());
         tv_description.setText(bookBean.getDescription());
-        tv_owner.setText(bookBean.getOwner());
+        tv_owner.setText("ownerd by" + bookBean.getOwner());
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setContentView(v);
         dialog.getWindow().setGravity(Gravity.CENTER);
         btn_sure.setOnClickListener(new View.OnClickListener() {
-
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 dialog.dismiss();
-                Toast.makeText(SearchBookActivity.this, "ok", Toast.LENGTH_LONG).show();
+                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                Notification notification = new NotificationCompat.Builder(SearchBookActivity.this)//此处会有中间一道线，并不影响运行，这是android系统版本的问题
+                          .setContentTitle("request success")  //显示通知的标题
+                          .setContentText("books")//显示消息通知的内容
+                          .setWhen(System.currentTimeMillis())//显示通知的具体时间
+                          .setSmallIcon(R.mipmap.ic_launcher)//这里设置显示的是手机顶部系统通知的应用图标
+                          .setLargeIcon(BitmapFactory.decodeResource(SearchBookActivity.this.getResources(), R.mipmap.ic_launcher))//这里设置显示的是下拉通知栏后显示的系统图标
+                          //.setAutoCancel(true)//可以在此使用此方法，点击通知后，通知内容自动取消,也可以在NotificationActivity.java中设置方法取消显示通知内容
+                          .setVibrate(new long[]{0, 1000, 1000, 1000})//设置发出通知后震动一秒，停止一秒后再震动一秒，需要在manifest.xml中设置权限
+                          .build();
+                manager.notify(1, notification);
             }
         });
 
@@ -112,7 +132,6 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 dialog.dismiss();
-                Toast.makeText(SearchBookActivity.this, "no", Toast.LENGTH_LONG).show();
             }
         });
     }
