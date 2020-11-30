@@ -4,17 +4,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-//import com.google.firebase.storage.FirebaseStorage;
-//import com.google.firebase.storage.StorageReference;
 
 public class Database {
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    public static FirebaseStorage storage = FirebaseStorage.getInstance();
-//    public static StorageReference storageRef = storage.getReference();
 
     /**
-     * gets reference
+     * gets reference for the specific  user
      * @param userID unique userID for user from firebase auth.
      * @return document reference for the user
      */
@@ -23,13 +18,15 @@ public class Database {
                 .document(userID);
     }
 
-    public static DocumentReference getBookInfo(String ISBN) {
-        return Database.db.collection("books")
-                .document(ISBN);
+    /**
+     * gets reference for the "user" Collection
+     * @return document reference for the user
+     */
+    public static CollectionReference getusers() {
+        return Database.db.collection("users");
     }
-    public static void addBookInfo(HashMap book, String ISBN) {
-        Database.db.collection("books").document(ISBN).set(book);
-    }
+
+
 
     /**
      * gets a book's reference
@@ -100,5 +97,4 @@ public class Database {
         return Database.db.collection("users")
                 .document(userID).collection("my accepted requests");
     }
-
 }

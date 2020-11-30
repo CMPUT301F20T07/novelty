@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 bookDataList.clear();
                 dataList1.clear();
+                assert queryDocumentSnapshots != null;
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String title = (String) doc.getData().get("Title");
                     String ISBN = (String) doc.getData().get("ISBN");
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 bookDataList.clear();
                 dataList2.clear();
+                assert queryDocumentSnapshots != null;
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String title = (String) doc.getData().get("Title");
                     String ISBN = (String) doc.getData().get("ISBN");
@@ -170,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 bookDataList.clear();
                 dataList3.clear();
+                assert queryDocumentSnapshots != null;
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String title = (String) doc.getData().get("Title");
                     String ISBN = (String) doc.getData().get("ISBN");
@@ -203,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
                 bookDataList.clear();
                 dataList4.clear();
+                assert queryDocumentSnapshots != null;
                 for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
                     String title = (String) doc.getData().get("Title");
                     String ISBN = (String) doc.getData().get("ISBN");
@@ -394,12 +398,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_log_out:
                 //send user to Login activity once logged out.
-                Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
                 logout(findViewById(R.id.nav_log_out));
                 break;
 
             case R.id.nav_contact_info:
-                Toast.makeText(MainActivity.this, "Contact information", Toast.LENGTH_SHORT).show();
+                mIntent.setClass(MainActivity.this, contact_info.class);
+                startActivity(mIntent);
                 break;
             case R.id.nav_search_book:
                 mIntent.setClass(MainActivity.this, SearchBookActivity.class);
