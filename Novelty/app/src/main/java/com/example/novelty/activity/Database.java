@@ -72,7 +72,7 @@ public class Database {
      */
     public static CollectionReference userRequestRef(String userID) {
         return Database.db.collection("users")
-                .document(userID).collection("my requests");
+                .document(userID).collection("requested");
     }
 
     /**
@@ -83,6 +83,6 @@ public class Database {
      */
     public static CollectionReference userAcceptedRef(String userID) {
         return Database.db.collection("users")
-                .document(userID).collection("accepted requests");
+                .document(userID).collection("accepted");
     }
 }
