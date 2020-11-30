@@ -28,7 +28,6 @@ public class Database {
         return Database.db.collection("users");
     }
 
-
     /**
      * gets a specific book's reference
      *
@@ -61,8 +60,6 @@ public class Database {
         return Database.db.collection("users")
                 .document(userID).collection("borrowed");
     }
-
-
 
     /**
      * book requests
