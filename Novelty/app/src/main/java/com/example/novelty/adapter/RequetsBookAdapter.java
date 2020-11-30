@@ -42,24 +42,29 @@ public class RequetsBookAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         return position;
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.book_item, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_listview_search, null);
             holder = new ViewHolder();
-            holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+            holder.tv_author = (TextView) convertView.findViewById(R.id.tv_author);
+            holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
+            holder.tv_description = (TextView) convertView.findViewById(R.id.tv_description);
+            holder.tv_owner = (TextView) convertView.findViewById(R.id.tv_owner);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        holder.tv_name.setText(list.get(position).getTitle());
+        holder.tv_author.setText("status:" + "request");
+        holder.tv_title.setText("bookName:" + list.get(position).getTitle());
+        holder.tv_description.setText("owner:" + list.get(position).getOwner());
+        holder.tv_owner.setText("description:" + list.get(position).getDescription());
         return convertView;
     }
 
 
     class ViewHolder {
-        TextView tv_name;
+        TextView tv_title, tv_author, tv_description, tv_owner;
     }
 
 }

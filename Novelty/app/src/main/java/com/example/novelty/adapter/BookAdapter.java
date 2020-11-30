@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
@@ -57,12 +58,14 @@ public class BookAdapter extends BaseAdapter implements Filterable {
             holder.tv_author = (TextView) convertView.findViewById(R.id.tv_author);
             holder.tv_title = (TextView) convertView.findViewById(R.id.tv_title);
             holder.tv_description = (TextView) convertView.findViewById(R.id.tv_description);
+            holder.tv_owner = (TextView) convertView.findViewById(R.id.tv_owner);
             convertView.setTag(holder);
         }
         holder = (ViewHolder) convertView.getTag();
-        holder.tv_author.setText(list.get(position).getAuthor());
-        holder.tv_title.setText(list.get(position).getTitle());
-        holder.tv_description.setText(list.get(position).getDescription());
+        holder.tv_author.setText("status:" + "request");
+        holder.tv_title.setText("bookName:" + list.get(position).getTitle());
+        holder.tv_description.setText("description:" + list.get(position).getDescription());
+        holder.tv_owner.setText("Owner:" + list.get(position).getAuthor());
         return convertView;
     }
 
@@ -108,7 +111,12 @@ public class BookAdapter extends BaseAdapter implements Filterable {
                                       FilterResults results) {
             list = (List<BookBean>) results.values;
             if (listener != null) {
-                listener.getFilterData(list);
+                if (list.size() > 0) {
+                    listener.getFilterData(list);
+                } else {
+                    listener.getFilterData(original);
+                    Toast.makeText(context, "no this book", Toast.LENGTH_SHORT).show();
+                }
             }
             notifyDataSetChanged();
         }
@@ -116,11 +124,20 @@ public class BookAdapter extends BaseAdapter implements Filterable {
     }
 
     class ViewHolder {
-        TextView tv_title, tv_author, tv_description;
+        TextView tv_title, tv_author, tv_description, tv_owner;
     }
 
     public interface FilterListener {
         void getFilterData(List<BookBean> list);
+    }
+
+    public void setdata(List<BookBean> list1) {
+        if (list.size() > 0) {
+            list.clear();
+        }
+        this.list = list1;
+        notifyDataSetChanged();
+
     }
 }
 

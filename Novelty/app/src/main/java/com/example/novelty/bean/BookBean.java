@@ -1,26 +1,75 @@
 package com.example.novelty.bean;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BookBean {
+public class BookBean implements Serializable {
     String title;
     String author;
     String ISBN;
     String description;
-    String status;
+    String status ="request";
     String owner;
     String borrower;
-    String photograph;
+    String holder;
+    String imageID;
+    Uri photoUri;
+
     private ArrayList<RequestBean> requests;
 
     public BookBean(String title) {
         this.title = title;
+        this.author = null;
+        this.ISBN = null;
+        this.description = null;
+        this.owner = null;
+        this.borrower = null;
+        this.holder = null;
+        this.owner = null;
+        this.photoUri = null;
+        this.status = null;
+        this.imageID = "";
     }
 
-    public BookBean(String title, String author, String description) {
+    public BookBean(String title, String description, String status, String owner) {
         this.title = title;
-        this.author = author;
         this.description = description;
+        this.status = status;
+        this.owner = owner;
+        this.ISBN = null;
+        this.borrower = null;
+        this.holder = null;
+        this.photoUri = null;
+        this.status = null;
+        this.imageID = "";
+    }
+
+
+    public String getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
+    }
+
+    public String getHolder() {
+        return holder;
+    }
+
+    public void setHolder(String holder) {
+        this.holder = holder;
+    }
+
+    public Uri getPhotoUri() {
+        return photoUri;
+    }
+
+    public void setPhotoUri(Uri photoUri) {
+        this.photoUri = photoUri;
     }
 
     public String getTitle() {
@@ -55,10 +104,6 @@ public class BookBean {
         return requests;
     }
 
-    public String getPhotograph() {
-        return photograph;
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -87,7 +132,4 @@ public class BookBean {
         this.borrower = borrower;
     }
 
-    public void setPhotograph(String photograph) {
-        this.photograph = photograph;
-    }
 }

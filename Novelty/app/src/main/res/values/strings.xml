@@ -17,4 +17,11 @@
     <string name="close">Close navigation drawer</string>
     <string name="nav_header_title">username</string>
 
+    <string-array name="status">
+        <item>Available</item>
+        <item>Requested</item>
+        <item>Accepted</item>
+        <item>Borrowed</item>
+    </string-array>
+
 </resources>
