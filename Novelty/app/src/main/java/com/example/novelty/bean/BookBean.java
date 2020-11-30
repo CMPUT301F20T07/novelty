@@ -15,7 +15,7 @@ public class BookBean implements Serializable {
     String owner;
     String borrower;
     String holder;
-    Bitmap photo;
+    String imageID;
     Uri photoUri;
 
     private ArrayList<RequestBean> requests;
@@ -29,9 +29,9 @@ public class BookBean implements Serializable {
         this.borrower = null;
         this.holder = null;
         this.owner = null;
-        this.photo = null;
         this.photoUri = null;
         this.status = null;
+        this.imageID = "";
     }
 
     public BookBean(String title, String description, String status, String owner) {
@@ -42,9 +42,18 @@ public class BookBean implements Serializable {
         this.ISBN = null;
         this.borrower = null;
         this.holder = null;
-        this.photo = null;
         this.photoUri = null;
         this.status = null;
+        this.imageID = "";
+    }
+
+
+    public String getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
     }
 
     public String getHolder() {
@@ -53,14 +62,6 @@ public class BookBean implements Serializable {
 
     public void setHolder(String holder) {
         this.holder = holder;
-    }
-
-    public Bitmap getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Bitmap photo) {
-        this.photo = photo;
     }
 
     public Uri getPhotoUri() {

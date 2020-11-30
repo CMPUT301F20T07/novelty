@@ -27,7 +27,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +39,8 @@ import java.util.Map;
 public class AddBook extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     public static final int UPLOAD_PHOTO = 100;
+
+    FirebaseStorage storage;
 
     Bitmap bitmap = null;
     Uri imageUri = null;
@@ -63,6 +69,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
         setContentView(R.layout.activity_add_book);
 
         fAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
 
         uploadPhotoButton = findViewById(R.id.btn_upload);
         deletePhotoButton = findViewById(R.id.btn_deletePhoto);
@@ -98,6 +105,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
         deletePhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bitmap = null;
                 photoView.setImageResource(0);
             }
         });
@@ -151,6 +159,13 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                 String description = editDescription.getText().toString();
                 String status = spinner.getSelectedItem().toString();
 
+
+                String imageID = "";
+                if (bitmap != null) {
+                    imageID = handleUpload(bitmap);
+                }
+
+
                 if (ISBN.length() > 0 && author.length() > 0 && title.length() > 0) {
                     Map<String, Object> bookMap = new HashMap<>();
                     bookMap.put("ISBN", ISBN);
@@ -159,6 +174,7 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
                     bookMap.put("Holder", holder);
                     bookMap.put("Description", description);
                     bookMap.put("Status", status);
+                    bookMap.put("imageID", imageID);
 
                     if (status.length() > 0) {
                         switch (status) {
@@ -272,5 +288,34 @@ public class AddBook extends AppCompatActivity implements AdapterView.OnItemSele
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
+    private String handleUpload(Bitmap bm) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 30, baos);
+
+        String bookID = userID + "-" + editISBN.getText().toString();
+        String imgID = bookID + ".jpeg";
+        StorageReference reference = storage.getReference()
+                .child(imgID);
+
+        reference.putBytes(baos.toByteArray())
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(AddBook.this,"Success", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Sample", "onFailure", e.getCause());
+                    }
+                });
+
+        return imgID;
+    }
+
+
 }
 
