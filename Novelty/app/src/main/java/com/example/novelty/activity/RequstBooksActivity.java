@@ -37,11 +37,11 @@ public class RequstBooksActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         listView = findViewById(R.id.listRequest);
-        mBook.add(new BookBean("To Kill a Mockingbird", "when I resent the size of my unbounded set, I want more numbers than I’m likely to get, and God", "request", "John Green"));
-        mBook.add(new BookBean("The Silent Patient", "There are infinite numbers between 0 and 1,You gave me a forever within the numbered days", "request ", "John Green"));
-        mBook.add(new BookBean("Tuesdays with Morrie", "It was Tuesday", "request", "Mitch Albom"));
-        mBook.add(new BookBean("Sweetbitter", "Bitter, always a bit anticipated.The mouth still hesitates at each new encounter.We urge it forward, say, Adapt. Now, enjoy it.", "this is36", "Stephanie Danler"));
-        mBook.add(new BookBean("Lord of the flies", "Funerals are not for the dead,they are for the living.", "request", "William Golding"));
+//        mBook.add(new BookBean("To Kill a Mockingbird", "when I resent the size of my unbounded set, I want more numbers than I’m likely to get, and God", "request", "John Green"));
+//        mBook.add(new BookBean("The Silent Patient", "There are infinite numbers between 0 and 1,You gave me a forever within the numbered days", "request ", "John Green"));
+//        mBook.add(new BookBean("Tuesdays with Morrie", "It was Tuesday", "request", "Mitch Albom"));
+//        mBook.add(new BookBean("Sweetbitter", "Bitter, always a bit anticipated.The mouth still hesitates at each new encounter.We urge it forward, say, Adapt. Now, enjoy it.", "this is36", "Stephanie Danler"));
+//        mBook.add(new BookBean("Lord of the flies", "Funerals are not for the dead,they are for the living.", "request", "William Golding"));
 
         listView.setAdapter(new RequetsBookAdapter(mBook, this));
 

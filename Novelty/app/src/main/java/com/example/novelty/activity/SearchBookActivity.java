@@ -1,16 +1,14 @@
 package com.example.novelty.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.app.NotificationCompat;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +21,26 @@ import android.widget.Toast;
 import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
 import com.example.novelty.adapter.BookAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SearchBookActivity extends AppCompatActivity {
     List<BookBean> mBookList = new ArrayList<>();
     SearchView searchView;
     ListView mListView;
     BookAdapter adapter;
+    CollectionReference bookInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +48,16 @@ public class SearchBookActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_book);
         searchView = findViewById(R.id.searchView);
         searchView.onActionViewExpanded();
+        searchView.clearFocus();
         searchView.setIconifiedByDefault(false);
         mListView = findViewById(R.id.listBook);
-        mBookList.add(new BookBean("To Kill a Mockingbird", "when I resent the size of my unbounded set, I want more numbers than I’m likely to get, and God", "request", "John Green"));
-        mBookList.add(new BookBean("The Silent Patient", "There are infinite numbers between 0 and 1,You gave me a forever within the numbered days", "request ", "John Green"));
-        mBookList.add(new BookBean("Tuesdays with Morrie", "It was Tuesday", "request", "Mitch Albom"));
-        mBookList.add(new BookBean("Sweetbitter", "Bitter, always a bit anticipated.The mouth still hesitates at each new encounter.We urge it forward, say, Adapt. Now, enjoy it.", "this is36", "Stephanie Danler"));
-        mBookList.add(new BookBean("Lord of the flies", "Funerals are not for the dead,they are for the living.", "request", "William Golding"));
-
-
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         adapter = new BookAdapter(mBookList, this, new BookAdapter.FilterListener() {
             @Override
             public void getFilterData(List<BookBean> list) {
                 setItemClick(list);
-
             }
         });
-
-
-        mListView.setAdapter(adapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,6 +66,27 @@ public class SearchBookActivity extends AppCompatActivity {
 
             }
         });
+        mListView.setAdapter(adapter);
+        bookInfo = Database.getBookInfo(uid);
+        bookInfo.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    String ibsn = (String) documentSnapshot.get("ISBN");
+                    Database.getBookRef(bookInfo, ibsn).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot result = task.getResult();
+                            Map<String, Object> data = result.getData();
+                            mBookList.add(new BookBean(data.get("book_name").toString(), data.get("author").toString(), data.get("description").toString(), "request"));
+                        }
+                    });
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -77,6 +98,10 @@ public class SearchBookActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
+                if (s.length() == 0) {
+
+                    adapter.setdata(mBookList);
+                }
                 return false;
             }
         });
@@ -91,8 +116,7 @@ public class SearchBookActivity extends AppCompatActivity {
         });
     }
 
-
-    private void dialogShow(BookBean bookBean) {
+    private void dialogShow(final BookBean bookBean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         View v = inflater.inflate(R.layout.book_details_dialog, null);
@@ -101,29 +125,20 @@ public class SearchBookActivity extends AppCompatActivity {
         TextView tv_description = (TextView) v.findViewById(R.id.tv_description);
         TextView tv_owner = (TextView) v.findViewById(R.id.tv_owner);
         TextView tv_book_title = (TextView) v.findViewById(R.id.tv_book_title);
-
         tv_book_title.setText(bookBean.getTitle());
         tv_description.setText(bookBean.getDescription());
-        tv_owner.setText("ownerd by" + bookBean.getOwner());
+        tv_owner.setText(bookBean.getOwner());
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.getWindow().setContentView(v);
         dialog.getWindow().setGravity(Gravity.CENTER);
         btn_sure.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 dialog.dismiss();
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                Notification notification = new NotificationCompat.Builder(SearchBookActivity.this)//此处会有中间一道线，并不影响运行，这是android系统版本的问题
-                          .setContentTitle("request success")  //显示通知的标题
-                          .setContentText("books")//显示消息通知的内容
-                          .setWhen(System.currentTimeMillis())//显示通知的具体时间
-                          .setSmallIcon(R.mipmap.ic_launcher)//这里设置显示的是手机顶部系统通知的应用图标
-                          .setLargeIcon(BitmapFactory.decodeResource(SearchBookActivity.this.getResources(), R.mipmap.ic_launcher))//这里设置显示的是下拉通知栏后显示的系统图标
-                          //.setAutoCancel(true)//可以在此使用此方法，点击通知后，通知内容自动取消,也可以在NotificationActivity.java中设置方法取消显示通知内容
-                          .setVibrate(new long[]{0, 1000, 1000, 1000})//设置发出通知后震动一秒，停止一秒后再震动一秒，需要在manifest.xml中设置权限
-                          .build();
-                manager.notify(1, notification);
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                Database.userRequestRef(uid).document(uid).set(bookBean);
             }
         });
 
@@ -135,6 +150,4 @@ public class SearchBookActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

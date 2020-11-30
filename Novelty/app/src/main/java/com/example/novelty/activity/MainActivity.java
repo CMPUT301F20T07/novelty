@@ -1,7 +1,6 @@
 package com.example.novelty.activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,41 +11,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.novelty.R;
-import com.example.novelty.adapter.CustomList_Book;
-import com.example.novelty.adapter.NestedListView;
-import com.example.novelty.bean.BookBean;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public static final int VIEW_EDIT_BOOK = 100101;
-    public static final int ADD_BOOK = 100102;
-
     FloatingActionButton fab_scan, fab_lend, fab_return, fab_view, fab_confirm;
     Animation fabOpen, fabClose, fabRClockwise, fabRCounterClockwise;
-
-    NestedListView bookList;
-    ArrayList<BookBean> bookDataList;
-    ArrayAdapter<BookBean> bookAdapter;
-
-    int select_pos = -1;
 
     private DrawerLayout drawerlayout;
     private ActionBarDrawerToggle toggle;
@@ -64,66 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        bookList = findViewById(R.id.mainscreen_list);
-        bookDataList = new ArrayList<>();
-        bookAdapter = new CustomList_Book(this, bookDataList);
-
-        bookList.setAdapter(bookAdapter);
-        bookList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        //test==========================================
-        BookBean book1 = new BookBean("Book 1");
-        BookBean book2 = new BookBean("Book 2");
-        BookBean book3 = new BookBean("Book 3");
-        BookBean book4 = new BookBean("Book 4");
-        BookBean book5 = new BookBean("Book 5");
-        BookBean book6 = new BookBean("Book 6");
-        BookBean book7 = new BookBean("Book 7");
-        BookBean book8 = new BookBean("Book 8");
-        BookBean book9 = new BookBean("Book 9");
-        BookBean book10 = new BookBean("Book 10");
-        BookBean book11 = new BookBean("Book 11");
-        BookBean book12 = new BookBean("Book 12");
-        BookBean book13 = new BookBean("Book 13");
-        BookBean book14 = new BookBean("Book 14");
-        BookBean book15 = new BookBean("Book 15");
-
-        bookDataList.add(book1);
-        bookDataList.add(book2);
-        bookDataList.add(book3);
-        bookDataList.add(book4);
-        bookDataList.add(book5);
-        bookDataList.add(book6);
-        bookDataList.add(book7);
-        bookDataList.add(book8);
-        bookDataList.add(book9);
-        bookDataList.add(book10);
-        bookDataList.add(book11);
-        bookDataList.add(book12);
-        bookDataList.add(book13);
-        bookDataList.add(book14);
-        bookDataList.add(book15);
-
-        bookAdapter.notifyDataSetChanged();
-
-
-        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                select_pos = position;
-
-                BookBean book = bookDataList.get(position);
-
-                Intent viewEditIntent = new Intent(MainActivity.this, ViewEditBook.class);
-                viewEditIntent.putExtra("book", book);
-                startActivity(viewEditIntent);
-                //startActivityForResult(viewEditIntent, VIEW_EDIT_BOOK);
-            }
-        });
-
-        //test===============================================
-
 
         fab_scan = findViewById(R.id.flt_scan);
         fab_lend = findViewById(R.id.flt_lend);
@@ -153,15 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
-
-        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //call the FilterDialog class to show the dialog fragment
-                new FilterDialog().show(getSupportFragmentManager(), "filterdialog");
-
-            }
-        });
 
         bottomAppBar.setOnMenuItemClickListener(new BottomAppBar.OnMenuItemClickListener() {
             @Override
@@ -298,23 +212,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        switch (requestCode) {
-
-            case VIEW_EDIT_BOOK:
-                break;
-
-            case ADD_BOOK:
-                break;
-
-            default:
-                break;
-        }
-    }
-
 }

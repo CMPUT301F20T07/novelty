@@ -2,7 +2,6 @@ package com.example.novelty.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,23 +23,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RequestDetailsActivity extends AppCompatActivity {
-    List<BookBean> mBookList = new ArrayList<>();
-    SearchView searchView;
-    ListView mListView;
-    BookAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_detail);
-//        findViewById(R.id.rule).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(RequestDetailsActivity.this, MapActivity.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+
+        TextView book = findViewById(R.id.tv_book_name);
+        TextView tv_au = findViewById(R.id.tv_au);
+        TextView rule = findViewById(R.id.rule);
+        TextView tv_description = findViewById(R.id.tv_description);
+        book.setText(getIntent().getStringExtra("title"));
+        tv_au.setText(getIntent().getStringExtra("Owner"));
+        tv_description.setText(getIntent().getStringExtra("description"));
+        rule.setText(getIntent().getStringExtra("status"));
     }
 
 }

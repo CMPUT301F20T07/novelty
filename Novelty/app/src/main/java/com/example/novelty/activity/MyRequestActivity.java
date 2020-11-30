@@ -1,19 +1,23 @@
 package com.example.novelty.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.novelty.R;
 import com.example.novelty.adapter.RequetsAdapter;
 import com.example.novelty.bean.RequestBean;
-import com.example.novelty.bean.UserBean;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,8 @@ import java.util.List;
 public class MyRequestActivity extends AppCompatActivity {
     ListView listView;
     List<RequestBean> mRequest = new ArrayList<>();
+    CollectionReference requestRef;
+    RequetsAdapter requetsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,32 +34,32 @@ public class MyRequestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         listView = findViewById(R.id.listRequest);
-        List<UserBean> userBeans = new ArrayList<>();
-
-        UserBean userBean = new UserBean("111111", "111111");
-        UserBean userBean1 = new UserBean("22222", "2222222");
-        UserBean userBean3 = new UserBean("333333", "333333");
-        UserBean userBean4 = new UserBean("444444", "4444444");
-
-        userBeans.add(userBean);
-        userBeans.add(userBean1);
-        userBeans.add(userBean3);
-        userBeans.add(userBean4);
-        RequestBean requested = new RequestBean("requested", userBeans);
-        RequestBean requested2 = new RequestBean("requested", userBeans);
-        RequestBean requested3 = new RequestBean("requested", userBeans);
-        RequestBean requested4 = new RequestBean("requested", userBeans);
-        RequestBean requested5 = new RequestBean("requested", userBeans);
-        mRequest.add(requested);
-        mRequest.add(requested2);
-        mRequest.add(requested3);
-        mRequest.add(requested4);
-        mRequest.add(requested5);
-        listView.setAdapter(new RequetsAdapter(mRequest, this));
+        requetsAdapter = new RequetsAdapter(mRequest, this);
+        listView.setAdapter(requetsAdapter);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        requestRef = Database.userRequestRef(uid);
+        requestRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    String Owner = (String) documentSnapshot.get("Owner");
+                    String description = (String) documentSnapshot.get("description");
+                    String status = (String) documentSnapshot.get("status");
+                    String title = (String) documentSnapshot.get("title");
+                    mRequest.add(new RequestBean(title, status, Owner, description));
+                }
+                requetsAdapter.notifyDataSetChanged();
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                RequestBean requestBean = mRequest.get(i);
                 Intent intent = new Intent(MyRequestActivity.this, RequestDetailsActivity.class);
+                intent.putExtra("Owner",requestBean.getOwer());
+                intent.putExtra("description",requestBean.getDescription());
+                intent.putExtra("status",requestBean.getStatus());
+                intent.putExtra("title",requestBean.getBook());
                 startActivity(intent);
             }
         });

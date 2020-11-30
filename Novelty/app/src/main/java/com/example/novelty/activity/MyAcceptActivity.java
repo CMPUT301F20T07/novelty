@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.novelty.R;
@@ -19,6 +20,12 @@ import com.example.novelty.adapter.UserAdapter;
 import com.example.novelty.bean.BookBean;
 import com.example.novelty.bean.RequestBean;
 import com.example.novelty.bean.UserBean;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +34,8 @@ public class MyAcceptActivity extends AppCompatActivity {
     ListView listView;
     List<BookBean> mBook = new ArrayList<>();
     List<UserBean> userBeans = new ArrayList<>();
+    CollectionReference requestRef;
+    RequetsBookAdapter requetsBookAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,22 +43,25 @@ public class MyAcceptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         listView = findViewById(R.id.listRequest);
-        mBook.add(new BookBean("To Kill a Mockingbird", "when I resent the size of my unbounded set, I want more numbers than I’m likely to get, and God", "request", "John Green"));
-        mBook.add(new BookBean("The Silent Patient", "There are infinite numbers between 0 and 1,You gave me a forever within the numbered days", "request ", "John Green"));
-        mBook.add(new BookBean("Tuesdays with Morrie", "It was Tuesday", "request", "Mitch Albom"));
-        mBook.add(new BookBean("Sweetbitter", "Bitter, always a bit anticipated.The mouth still hesitates at each new encounter.We urge it forward, say, Adapt. Now, enjoy it.", "this is36", "Stephanie Danler"));
-        mBook.add(new BookBean("Lord of the flies", "Funerals are not for the dead,they are for the living.", "request", "William Golding"));
+        requetsBookAdapter =new RequetsBookAdapter(mBook, this);
+        listView.setAdapter(requetsBookAdapter);
 
 
-        UserBean userBean = new UserBean("lihua", "010203455");
-        UserBean userBean1 = new UserBean("yuan", "7323453");
-        UserBean userBean3 = new UserBean("blue li", "134t454323");
-        UserBean userBean4 = new UserBean("jack", "10334535");
-        userBeans.add(userBean);
-        userBeans.add(userBean1);
-        userBeans.add(userBean3);
-        userBeans.add(userBean4);
-        listView.setAdapter(new RequetsBookAdapter(mBook, this));
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        requestRef = Database.userRequestRef(uid);
+        requestRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for (QueryDocumentSnapshot documentSnapshot : value) {
+                    String Owner = (String) documentSnapshot.get("Owner");
+                    String description = (String) documentSnapshot.get("description");
+                    String status = (String) documentSnapshot.get("status");
+                    String title = (String) documentSnapshot.get("title");
+                    mBook.add(new BookBean(title, status, Owner, description));
+                }
+                requetsBookAdapter.notifyDataSetChanged();
+            }
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -62,8 +74,6 @@ public class MyAcceptActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     private void dialogShow(List<UserBean> bookBean) {

@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.novelty.R;
 import com.example.novelty.bean.BookBean;
@@ -64,7 +65,7 @@ public class BookAdapter extends BaseAdapter implements Filterable {
         holder.tv_author.setText("status:" + list.get(position).getStatus());
         holder.tv_title.setText("bookName:" + list.get(position).getTitle());
         holder.tv_description.setText("description:" + list.get(position).getDescription());
-        holder.tv_owner.setText("Owner:" + list.get(position).getOwner());
+        holder.tv_owner.setText("Owner:" + list.get(position).getAuthor());
         return convertView;
     }
 
@@ -110,7 +111,12 @@ public class BookAdapter extends BaseAdapter implements Filterable {
                                       FilterResults results) {
             list = (List<BookBean>) results.values;
             if (listener != null) {
-                listener.getFilterData(list);
+                if (list.size() > 0) {
+                    listener.getFilterData(list);
+                } else {
+                    listener.getFilterData(original);
+                    Toast.makeText(context, "no this book", Toast.LENGTH_SHORT).show();
+                }
             }
             notifyDataSetChanged();
         }
@@ -123,6 +129,15 @@ public class BookAdapter extends BaseAdapter implements Filterable {
 
     public interface FilterListener {
         void getFilterData(List<BookBean> list);
+    }
+
+    public void setdata(List<BookBean> list1) {
+        if (list.size() > 0) {
+            list.clear();
+        }
+        this.list = list1;
+        notifyDataSetChanged();
+
     }
 }
 

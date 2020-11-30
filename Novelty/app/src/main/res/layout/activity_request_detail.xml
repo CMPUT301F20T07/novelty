@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:text="request detail"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -36,7 +37,8 @@
             android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
-            <EditText
+            <TextView
+                android:id="@+id/tv_book_name"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
                 android:layout_weight="1"
@@ -136,6 +138,7 @@
 
 
         <TextView
+            android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="10dp"

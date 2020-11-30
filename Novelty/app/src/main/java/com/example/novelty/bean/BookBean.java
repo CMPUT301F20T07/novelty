@@ -1,14 +1,13 @@
 package com.example.novelty.bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BookBean implements Serializable {
+public class BookBean {
     String title;
     String author;
     String ISBN;
     String description;
-    String status;
+    String status="request";
     String owner;
     String borrower;
     String photograph;
@@ -18,11 +17,11 @@ public class BookBean implements Serializable {
         this.title = title;
     }
 
-    public BookBean(String title, String description, String status, String owner) {
+    public BookBean(String title, String author, String description,String status) {
         this.title = title;
+        this.author = author;
         this.description = description;
         this.status = status;
-        this.owner = owner;
     }
 
     public String getTitle() {

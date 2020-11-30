@@ -1,20 +1,38 @@
 package com.example.novelty.bean;
 
-import java.util.List;
-
 public class RequestBean {
-    private BookBean book;
+    private String book;
     private String status;
-    private List<UserBean> from;
-    private UserBean ower;
-    private GeoLocation location;
+    private UserBean from;
+    private String ower;
+    private String location;
+    private String description;
 
-    public RequestBean(String status, List<UserBean> from) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setBook(String book) {
+        this.book = book;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setFrom(UserBean from) {
         this.from = from;
     }
 
-    public BookBean getBook() {
+    public void setOwer(String ower) {
+        this.ower = ower;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getBook() {
         return book;
     }
 
@@ -22,23 +40,22 @@ public class RequestBean {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setFrom(List<UserBean> from) {
-        this.from = from;
-    }
-
-    public List<UserBean> getFrom() {
+    public UserBean getFrom() {
         return from;
     }
 
-    public UserBean getOwer() {
+    public String getOwer() {
         return ower;
     }
 
-    public GeoLocation getLocation() {
+    public String getLocation() {
         return location;
+    }
+
+    public RequestBean(String book, String status, String ower, String description) {
+        this.book = book;
+        this.status = status;
+        this.ower = ower;
+        this.description = description;
     }
 }
