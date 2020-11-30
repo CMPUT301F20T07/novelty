@@ -229,6 +229,27 @@ public class ViewEditBook extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
 
+                switch (status) {
+                    case "Available":
+                        Database.userAvailRef(userID).document(ISBN).delete();
+                        break;
+
+                    case "Requested":
+                        Database.userRequestRef(userID).document(ISBN).delete();
+                        break;
+
+                    case "Accepted":
+                        Database.userAcceptedRef(userID).document(ISBN).delete();
+                        break;
+
+                    case "Borrowed":
+                        Database.userBorrowedRef(userID).document(ISBN).delete();
+                        break;
+
+                    default:
+                        break;
+                }
+
                 String ISBN = editISBN.getText().toString();
                 String author = editAuthor.getText().toString();
                 String title = editBookTitle.getText().toString();
